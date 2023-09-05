@@ -1,0 +1,49 @@
+name: Expo Publish
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "16"
+
+      - name: Determine Expo Channel
+        id: channel
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          if [[ "$VERSION" == *"-beta"* ]]; then
+            echo "Version contains beta. Publishing to test channel."
+            echo "::set-output name=expo_channel::test"
+          else
+            echo "Version does not contain beta. Publishing to default channel."
+            echo "::set-output name=expo_channel::default"
+          fi
+
+      - name: Install Expo CLI
+        run: npm install -g expo-cli
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Log in to Expo
+        env:
+          EXPO_CLI_USERNAME: ${{ secrets.EXPO_CLI_USERNAME }}
+          EXPO_CLI_PASSWORD: ${{ secrets.EXPO_CLI_PASSWORD }}
+        run: echo $EXPO_CLI_PASSWORD | expo login --username $EXPO_CLI_USERNAME --password-stdin
+
+      - name: Publish to Expo
+        run: expo publish --release-channel ${{ steps.channel.outputs.expo_channel }}
+
+      - name: Logout from Expo
+        run: expo logout
