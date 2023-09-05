@@ -23,13 +23,13 @@ const Bookmark = () => {
       bookmarks.refetch();
     }, [])
   );
-  console.log({
-    data: bookmarks?.data,
-  });
+  console.log(
+    bookmarks?.data?.data[0]);
 
   if (bookmarks.isLoading) {
     return <ActivityIndicator animating size={"large"} />;
   }
+  const data = bookmarks?.data?.data[0].data
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
@@ -45,7 +45,7 @@ const Bookmark = () => {
           blurOnSubmit={false}
         />
 
-        <ListComponent data={bookmarks?.data?.data || []} />
+        <ListComponent data={data || []} />
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );
