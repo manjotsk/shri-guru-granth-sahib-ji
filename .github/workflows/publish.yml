@@ -18,11 +18,15 @@ jobs:
         with:
           node-version: "16"
 
+      - name: Extract version from tag
+        id: extract-version
+        run: |
+          echo "RELEASE_VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+
       - name: Determine Expo Channel
         id: channel
         run: |
-          VERSION=$(node -p "require('./package.json').version")
-          if [[ "$VERSION" == *"-beta"* ]]; then
+          if [[ "$RELEASE_VERSION" == *"-beta"* ]]; then
             echo "Version contains beta. Publishing to test channel."
             echo "::set-output name=expo_channel::test"
           else
