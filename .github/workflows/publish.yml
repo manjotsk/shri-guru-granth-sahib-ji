@@ -13,22 +13,27 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
+      - name: Check for EXPO_TOKEN
+        run: |
+          if [ -z "${{ secrets.EXPO_TOKEN }}" ]; then
+            echo "You must provide an EXPO_TOKEN secret linked to this project's Expo account in this repo's secrets. Learn more: https://docs.expo.dev/eas-update/github-actions"
+            exit 1
+          fi
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
         with:
-          node-version: "16"
+          node-version: 18.x
+          cache: yarn
+
+      - name: Setup EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
 
       - name: Install dependencies
-        run: npx yarn
+        run: yarn install
 
-      - name: Log in to Expo
-        env:
-          EXPO_CLI_USERNAME: ${{ secrets.EXPO_CLI_USERNAME }}
-          EXPO_CLI_PASSWORD: ${{ secrets.EXPO_CLI_PASSWORD }}
-        run: echo $EXPO_CLI_PASSWORD | npx expo login --username $EXPO_CLI_USERNAME --password-stdin
-
-      - name: Publish to Expo
-        run: npx expo publish --release-channel test
-
-      - name: Logout from Expo
-        run: npx expo logout
+      - name: Publish update
+        run: eas update --branch preview --message "- {{ github.event.head_commit.message }}"
