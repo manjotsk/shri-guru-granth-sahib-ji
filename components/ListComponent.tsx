@@ -1,27 +1,11 @@
-import {
-  FlatList,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-  Modal,
-  Alert,
-  TouchableOpacity,
-} from "react-native";
+import { FlatList, Pressable, StyleSheet, Text, View, Modal, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
-import {
-  PanGestureHandler,
-  PanGestureHandlerGestureEvent,
-} from "react-native-gesture-handler";
-import Animated, {
-  useAnimatedGestureHandler,
-  useAnimatedStyle,
-  useSharedValue,
-  withSpring,
-} from "react-native-reanimated";
+import { PanGestureHandler, PanGestureHandlerGestureEvent } from "react-native-gesture-handler";
+import Animated, { useAnimatedGestureHandler, useAnimatedStyle, useSharedValue, withSpring } from "react-native-reanimated";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useDeleteBookmark } from "../data/bookmark/mutation";
 import { ActivityIndicator } from "react-native";
+import ConfirmModal from "./confirmModal";
 
 const LIST_HEIGHT = 60;
 const TRANSLATE_X_THRESHOLD = 20;
@@ -69,24 +53,38 @@ const ListItem = ({ item, onDelete }: any) => {
   const rStyle = useAnimatedStyle(() => ({
     transform: [{ translateX: translateX.value }],
   }));
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible1, setModalVisible1] = useState(false);
   return (
     <View>
-      <Animated.View style={styles.iconcontainer}>
-        <Pressable onPress={() => onDelete(item)}>
+      <Pressable onPress={() => setModalVisible(true)}>
+        <Animated.View style={styles.iconcontainer}>
           <FontAwesome5
             name={"trash-alt"}
             size={LIST_HEIGHT * 0.35}
             color={"white"}
           />
-        </Pressable>
-      </Animated.View>
+        </Animated.View>
+      </Pressable>
       <PanGestureHandler onGestureEvent={panGesture}>
         <Animated.View style={[styles.insidecontainer, rStyle]}>
+          <ConfirmModal modalVisible={modalVisible} setModalVisible={setModalVisible} onDelete={onDelete} />
           <View style={{ flex: 1, flexDirection: "row", marginRight: 5 }}>
-            <TouchableOpacity>
+            <Modal animationType="slide" transparent={false} visible={modalVisible1}>
+              <View>
+                <Text>{item.title}</Text>
+                <Text>{item.arth}</Text>
+                <Text>{item.lineno}</Text>
+                <TouchableOpacity onPress={() => setModalVisible1(!modalVisible1)}>
+                  <Text >Cancel</Text>
+                </TouchableOpacity>
+              </View>
+            </Modal>
+            <TouchableOpacity onPress={() => setModalVisible1(true)}>
               <Text
                 style={{
                   fontSize: 20,
+
                   color: "rgb(255,255,255)",
                   fontFamily: "GurbaniAkharHeavy",
                   alignItems: "center",
@@ -112,7 +110,6 @@ const ListItem = ({ item, onDelete }: any) => {
 };
 
 export default ListComponent;
-
 const styles = StyleSheet.create({
   insidecontainer: {
     width: "100%",
@@ -121,7 +118,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
-    backgroundColor: "#565656",
+    backgroundColor: "#232323",
     alignItems: "center",
   },
   iconcontainer: {

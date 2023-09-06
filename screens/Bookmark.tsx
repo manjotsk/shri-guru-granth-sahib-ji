@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -23,13 +23,11 @@ const Bookmark = () => {
       bookmarks.refetch();
     }, [])
   );
-  console.log({
-    data: bookmarks?.data,
-  });
 
   if (bookmarks.isLoading) {
     return <ActivityIndicator animating size={"large"} />;
   }
+  const data = bookmarks?.data?.data[0].data;
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
@@ -45,7 +43,7 @@ const Bookmark = () => {
           blurOnSubmit={false}
         />
 
-        <ListComponent data={bookmarks?.data?.data || []} />
+        <ListComponent data={data || []} />
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );

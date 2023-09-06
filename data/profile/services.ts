@@ -4,7 +4,7 @@ import SERVER from "../../config/connection";
 export const getProfile = (userId) => {
   return callApi({
     uriEndPoint: {
-      uri: "singleuser",
+      uri: "singleuser/:userId",
       method: "GET",
       version: "",
     },

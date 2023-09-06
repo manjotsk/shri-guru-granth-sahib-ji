@@ -9,8 +9,8 @@ import React, { useCallback } from "react";
 import { useProfile } from "../data/profile/query";
 import { useFocusEffect } from "@react-navigation/native";
 
-const Profile = () => {
-  const profile = useProfile();
+const Profile = (userId) => {
+  const profile = useProfile(userId);
   useFocusEffect(
     useCallback(() => {
       profile.refetch();
