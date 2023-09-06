@@ -71,12 +71,26 @@ const ListItem = ({ item, onDelete }: any) => {
           <ConfirmModal modalVisible={modalVisible} setModalVisible={setModalVisible} onDelete={onDelete} />
           <View style={{ flex: 1, flexDirection: "row", marginRight: 5 }}>
             <Modal animationType="slide" transparent={false} visible={modalVisible1}>
-              <View>
-                <Text>{item.title}</Text>
-                <Text>{item.arth}</Text>
-                <Text>{item.lineno}</Text>
-                <TouchableOpacity onPress={() => setModalVisible1(!modalVisible1)}>
-                  <Text >Cancel</Text>
+              <View style={{ flex: 1, margin: 10, }}>
+                {/* <View style={{
+                  backgroundColor: "rgba(74, 74, 74, 1)",
+                  width: 258,
+                  height: 140,
+                  borderRadius: 7,
+                  padding: 20,
+                  shadowColor: "#000",
+                  shadowOffset: {
+                    width: 0,
+                    height: 2,
+                  },
+                  shadowOpacity: 0.25,
+                  shadowRadius: 4,
+                  elevation: 5,
+                }}> */}
+                <Text style={{ fontSize: 25 }}>{item.title}</Text>
+                <Text style={{ fontFamily: "GurbaniAkhar", fontSize: 20, textAlign: 'justify' }}>{item.arth}</Text>
+                <TouchableOpacity onPress={() => setModalVisible1(!modalVisible1)} style={{ backgroundColor: 'rgb(120,50,200)', borderRadius: 10, width: 70, height: 30, alignSelf: 'center' }}>
+                  <Text style={{ color: "white", fontSize: 20, textAlign: 'center' }}>close</Text>
                 </TouchableOpacity>
               </View>
             </Modal>

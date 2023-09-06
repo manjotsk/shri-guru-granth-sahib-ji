@@ -36,7 +36,7 @@ function Ang({ page, setAngId }: RootTabScreenProps<"TabOne">) {
       }
     });
 
-    return () => {};
+    return () => { };
   }, []);
 
   const ang = useAng(
@@ -52,7 +52,6 @@ function Ang({ page, setAngId }: RootTabScreenProps<"TabOne">) {
 
   const onDoubleTapEvent = (event: any, data) => {
     if (event.nativeEvent.state === State.ACTIVE) {
-      console.log("double tap 1");
       addBookmark.mutateAsync(data);
     }
   };
@@ -105,8 +104,9 @@ function Ang({ page, setAngId }: RootTabScreenProps<"TabOne">) {
               onHandlerStateChange={(e) => {
                 onDoubleTapEvent(e, {
                   title: page.line.gurmukhi.unicode,
-                  arth: page.line.translation.punjabi.default.unicode,
+                  arth: page.line.translation.punjabi.default.akhar,
                   ang: page.line.pageno,
+                  lineno: page.line.lineno,
                 });
               }}
               numberOfTaps={2}
@@ -173,7 +173,7 @@ export default function TabOneScreen() {
       });
       setDisplayPage(true);
     }, 1000);
-    return () => {};
+    return () => { };
   }, [infinitePager.current]);
 
   return (

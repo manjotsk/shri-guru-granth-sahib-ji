@@ -1,4 +1,4 @@
-import { TextInput, StyleSheet, Dimensions } from "react-native";
+import { TextInput, StyleSheet, Dimensions, View } from "react-native";
 const { height, width } = Dimensions.get("window");
 const RegInput = ({
   setFullName,
@@ -8,10 +8,10 @@ const RegInput = ({
   setPassword,
 }: any) => {
   return (
-    <>
+    <View>
       <TextInput
         style={styles.txt}
-        placeholder="ਪੂਰਾ ਨਾਂਮ"
+        placeholder="ਪੂਰਾ ਨਾਮ"
         onChangeText={setFullName}
       />
       <TextInput
@@ -36,7 +36,7 @@ const RegInput = ({
         placeholder="ਪਾਸਵਰਡ"
         onChangeText={setPassword}
       />
-    </>
+    </View>
   );
 };
 export default RegInput;
@@ -48,6 +48,6 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     padding: 10,
     marginTop: 20,
-    top: 50,
+    bottom: 20
   },
 });
