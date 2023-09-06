@@ -5,6 +5,9 @@ import {
   Alert,
   Keyboard,
   TouchableWithoutFeedback,
+  SafeAreaView,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import { Text, View } from "../components/Themed";
 import { useFonts } from "expo-font";
@@ -42,51 +45,48 @@ const Registration = ({ navigation }: any) => {
       Alert.alert("Error", "Failed to save data. Please try again.");
     }
   };
-  const { mutate, isLoading, isError, error } = useMutation(registrationUser);
+  const { mutate, isLoading } = useMutation(registrationUser);
   const handleregistration = () => {
     mutate({ fullName, address, phone, email, password });
   };
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={styles.container}>
-        <StatusBar backgroundColor="#fff" />
-        <Text
-          style={{
-            fontSize: 26,
-            textAlign: "center",
-            top: 50,
-            fontFamily: "Rubik-Regular",
-          }}
-        >
-          ਵਾਹਿਗੁਰੂ ਜੀ ਕਾ ਖਾਲਸਾ।।{"\n"}
-          ਵਾਹਿਗੁਰੂ ਜੀ ਕੀ ਫਤਿਹ।।
-        </Text>
-        <RegInput
-          setFullName={setFullName}
-          setAddress={setAddress}
-          setPhone={setPhone}
-          setEmail={setEmail}
-          setPassword={setPassword}
-        />
-        <RegBtn handleregistration={handleregistration} isLoading={isLoading} />
-        <PressBtn navigation={navigation} />
-      </View>
-    </TouchableWithoutFeedback>
+
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={styles.container}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <SafeAreaView style={{ alignItems: 'center' }} >
+          <StatusBar backgroundColor="#fff" />
+          <Text
+            style={{
+              fontSize: 26,
+              textAlign: "center"
+            }}
+          >
+            ਵਾਹਿਗੁਰੂ ਜੀ ਕਾ ਖਾਲਸਾ।।{"\n"}
+            ਵਾਹਿਗੁਰੂ ਜੀ ਕੀ ਫਤਿਹ।।
+          </Text>
+          <RegInput
+            setFullName={setFullName}
+            setAddress={setAddress}
+            setPhone={setPhone}
+            setEmail={setEmail}
+            setPassword={setPassword}
+          />
+          <RegBtn handleregistration={handleregistration} isLoading={isLoading} />
+          <PressBtn navigation={navigation} />
+        </SafeAreaView>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
 export default Registration;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    marginVertical: 20,
     alignItems: "center",
     backgroundColor: "#eee",
-  },
-  background: {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    bottom: 0,
-    top: 0,
-  },
+  }
 });
