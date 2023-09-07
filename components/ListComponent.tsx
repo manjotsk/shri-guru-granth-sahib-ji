@@ -1,12 +1,15 @@
-import { FlatList, Pressable, StyleSheet, Text, View, Modal, TouchableOpacity } from "react-native";
+import { FlatList, Pressable, StyleSheet, Text, View, TouchableOpacity, Dimensions, TouchableWithoutFeedback } from "react-native";
 import React, { useState } from "react";
 import { PanGestureHandler, PanGestureHandlerGestureEvent } from "react-native-gesture-handler";
 import Animated, { useAnimatedGestureHandler, useAnimatedStyle, useSharedValue, withSpring } from "react-native-reanimated";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useDeleteBookmark } from "../data/bookmark/mutation";
 import { ActivityIndicator } from "react-native";
+import Modal from "react-native-modal";
 import ConfirmModal from "./confirmModal";
+const { width, height } = Dimensions.get('window')
 
+const White = "rgb(255, 255, 255)"
 const LIST_HEIGHT = 60;
 const TRANSLATE_X_THRESHOLD = 20;
 const ListComponent = ({ data }: any) => {
@@ -70,28 +73,22 @@ const ListItem = ({ item, onDelete }: any) => {
         <Animated.View style={[styles.insidecontainer, rStyle]}>
           <ConfirmModal modalVisible={modalVisible} setModalVisible={setModalVisible} onDelete={onDelete} />
           <View style={{ flex: 1, flexDirection: "row", marginRight: 5 }}>
-            <Modal animationType="slide" transparent={false} visible={modalVisible1}>
-              <View style={{ flex: 1, margin: 10, }}>
-                {/* <View style={{
-                  backgroundColor: "rgba(74, 74, 74, 1)",
-                  width: 258,
-                  height: 140,
-                  borderRadius: 7,
-                  padding: 20,
-                  shadowColor: "#000",
-                  shadowOffset: {
-                    width: 0,
-                    height: 2,
-                  },
-                  shadowOpacity: 0.25,
-                  shadowRadius: 4,
-                  elevation: 5,
-                }}> */}
-                <Text style={{ fontSize: 25 }}>{item.title}</Text>
-                <Text style={{ fontFamily: "GurbaniAkhar", fontSize: 20, textAlign: 'justify' }}>{item.arth}</Text>
-                <TouchableOpacity onPress={() => setModalVisible1(!modalVisible1)} style={{ backgroundColor: 'rgb(120,50,200)', borderRadius: 10, width: 70, height: 30, alignSelf: 'center' }}>
-                  <Text style={{ color: "white", fontSize: 20, textAlign: 'center' }}>close</Text>
-                </TouchableOpacity>
+            <Modal style={{ margin: 0 }} animationIn="slideInUp" swipeDirection={'down'} onSwipeCancel={() => setModalVisible1(false)} isVisible={modalVisible1} customBackdrop={<TouchableWithoutFeedback onPress={() => setModalVisible1(false)}>
+              <View style={{ flex: 1 }} />
+            </TouchableWithoutFeedback>}>
+              <View >
+                <View style={{
+                  backgroundColor: "rgba(74,74,74, 1)",
+                  width: width,
+                  height: height * 0.5,
+                  borderTopStartRadius: 10,
+                  borderTopRightRadius: 10,
+                  padding: 10,
+                  top: height * 0.3
+                }}>
+                  <Text style={{ fontSize: 25, color: White, fontWeight: 'bold' }}>{item.title}</Text>
+                  <Text style={{ fontFamily: "GurbaniAkhar", fontSize: 17, textAlign: 'justify', color: White }}>{item.arth}</Text>
+                </View>
               </View>
             </Modal>
             <TouchableOpacity onPress={() => setModalVisible1(true)}>
@@ -119,7 +116,7 @@ const ListItem = ({ item, onDelete }: any) => {
           </Text>
         </Animated.View>
       </PanGestureHandler>
-    </View>
+    </View >
   );
 };
 
