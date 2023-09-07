@@ -78,16 +78,19 @@ const ListItem = ({ item, onDelete }: any) => {
             </TouchableWithoutFeedback>}>
               <View >
                 <View style={{
-                  backgroundColor: "rgba(74,74,74, 1)",
+                  backgroundColor: "rgba(24,24,24, 1)",
                   width: width,
                   height: height * 0.5,
-                  borderTopStartRadius: 10,
-                  borderTopRightRadius: 10,
+                  borderTopStartRadius: 15,
+                  borderTopRightRadius: 15,
                   padding: 10,
                   top: height * 0.3
                 }}>
                   <Text style={{ fontSize: 25, color: White, fontWeight: 'bold' }}>{item.title}</Text>
+                  <Text style={{ fontFamily: "GurbaniAkhar", fontSize: 17, textAlign: 'justify', color: "green", fontWeight: "bold" }}>ਭਾਵ ਅਰਥ:</Text>
                   <Text style={{ fontFamily: "GurbaniAkhar", fontSize: 17, textAlign: 'justify', color: White }}>{item.arth}</Text>
+                  <Text style={{ fontFamily: "Lora-Regular", fontSize: 17, textAlign: 'justify', color: "orange", fontWeight: "bold" }}>English:</Text>
+                  <Text style={{ fontFamily: "Lora-Regular", fontSize: 17, textAlign: 'justify', color: White }}>{item.english}</Text>
                 </View>
               </View>
             </Modal>

@@ -105,6 +105,8 @@ function Ang({ page, setAngId }: RootTabScreenProps<"TabOne">) {
                 onDoubleTapEvent(e, {
                   title: page.line.gurmukhi.unicode,
                   arth: page.line.translation.punjabi.default.akhar,
+                  hindi: page.line.transliteration.devanagari.text,
+                  english: page.line.translation.english.default,
                   ang: page.line.pageno,
                   lineno: page.line.lineno,
                 });

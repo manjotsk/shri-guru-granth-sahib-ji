@@ -1,5 +1,6 @@
-import { Pressable, Text } from "react-native";
 import React from "react";
+import { Text } from "../components/Themed";
+import { Pressable } from "react-native";
 
 const PressBtn = ({ navigation }: any) => {
   return (

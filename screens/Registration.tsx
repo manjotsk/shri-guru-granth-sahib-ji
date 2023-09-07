@@ -1,16 +1,5 @@
-import {
-  StyleSheet,
-  StatusBar,
-  Dimensions,
-  Alert,
-  Keyboard,
-  TouchableWithoutFeedback,
-  SafeAreaView,
-  KeyboardAvoidingView,
-  Platform,
-} from "react-native";
-import { Text, View } from "../components/Themed";
-import { useFonts } from "expo-font";
+import { StyleSheet, Keyboard, TouchableWithoutFeedback, KeyboardAvoidingView, Platform, Alert, StatusBar } from "react-native";
+import { Text, } from "../components/Themed";
 import axios from "axios";
 import { useState } from "react";
 import SERVER from "../config/connection";
@@ -18,6 +7,7 @@ import RegInput from "../components/RegInput";
 import RegBtn from "../components/RegBtn";
 import PressBtn from "../components/PressBtn";
 import { useMutation } from "react-query";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const Registration = ({ navigation }: any) => {
   const [email, setEmail] = useState("");
@@ -57,7 +47,7 @@ const Registration = ({ navigation }: any) => {
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <SafeAreaView style={{ alignItems: 'center' }} >
-          <StatusBar backgroundColor="#fff" />
+          <StatusBar backgroundColor="#000" />
           <Text
             style={{
               fontSize: 26,
@@ -87,6 +77,5 @@ const styles = StyleSheet.create({
     flex: 1,
     marginVertical: 20,
     alignItems: "center",
-    backgroundColor: "#eee",
   }
 });
