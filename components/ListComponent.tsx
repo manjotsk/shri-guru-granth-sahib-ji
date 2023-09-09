@@ -21,9 +21,9 @@ const ListComponent = ({ data }: any) => {
     const nativeGesture = Gesture.Native().shouldActivateOnStart(true);
 
   return (
-    <GestureDetector gesture={nativeGesture}>
     <FlatList
       data={data}
+      showsVerticalScrollIndicator={false}
       renderItem={({ item }) => (
         <ListItem
           item={item}
@@ -33,7 +33,6 @@ const ListComponent = ({ data }: any) => {
         />
       )}
     />
-    </GestureDetector>
   );
 };
 
