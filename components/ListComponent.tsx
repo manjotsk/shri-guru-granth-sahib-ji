@@ -1,6 +1,6 @@
-import { FlatList, Pressable, StyleSheet, Text, View, TouchableOpacity, Dimensions, TouchableWithoutFeedback } from "react-native";
+import {Pressable, StyleSheet, Text, View, TouchableOpacity, Dimensions, TouchableWithoutFeedback } from "react-native";
 import React, { useState } from "react";
-import { PanGestureHandler, PanGestureHandlerGestureEvent } from "react-native-gesture-handler";
+import { Gesture, FlatList, PanGestureHandler, PanGestureHandlerGestureEvent, GestureDetector } from "react-native-gesture-handler";
 import Animated, { useAnimatedGestureHandler, useAnimatedStyle, useSharedValue, withSpring } from "react-native-reanimated";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useDeleteBookmark } from "../data/bookmark/mutation";
@@ -18,8 +18,10 @@ const ListComponent = ({ data }: any) => {
   const handleDelete = async (id) => deleteBookmark.mutateAsync(id);
   if (deleteBookmark.isLoading)
     return <ActivityIndicator animating size={"large"} />;
+    const nativeGesture = Gesture.Native().shouldActivateOnStart(true);
 
   return (
+    <GestureDetector gesture={nativeGesture}>
     <FlatList
       data={data}
       renderItem={({ item }) => (
@@ -31,6 +33,7 @@ const ListComponent = ({ data }: any) => {
         />
       )}
     />
+    </GestureDetector>
   );
 };
 
@@ -69,7 +72,7 @@ const ListItem = ({ item, onDelete }: any) => {
           />
         </Animated.View>
       </Pressable>
-      <PanGestureHandler onGestureEvent={panGesture}>
+      <PanGestureHandler failOffsetY={[-5, 5]} activeOffsetX={[-5, 5]} onGestureEvent={panGesture}>
         <Animated.View style={[styles.insidecontainer, rStyle]}>
           <ConfirmModal modalVisible={modalVisible} setModalVisible={setModalVisible} onDelete={onDelete} />
           <View style={{ flex: 1, flexDirection: "row", marginRight: 5 }}>

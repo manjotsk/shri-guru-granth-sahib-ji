@@ -78,13 +78,14 @@ const styles = StyleSheet.create({
         width: 258,
         height: 1,
         backgroundColor: "rgba(65, 65, 65, 1)",
-        marginTop: 9,
+        marginTop: 20,
     },
 
     buttonLineVertical: {
         width: 1,
         height: 40,
-        bottom: 4,
+        bottom: 2,
+        justifyContent:'center',
         backgroundColor: "rgba(65, 65, 65, 1)",
         marginHorizontal: 30,
     },
