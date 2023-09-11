@@ -30,8 +30,7 @@ const Bookmark = () => {
   if (bookmarks.isLoading) {
     return <ActivityIndicator animating size={"large"} />;
   }
-  const data = bookmarks?.data?.data[0];
-  console.log(data);
+  const data = bookmarks?.data?.data[0].data;
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
@@ -46,15 +45,7 @@ const Bookmark = () => {
           returnKeyType="next"
           blurOnSubmit={false}
         />
-        <FlatList
-          data={data}
-          renderItem={(item) =>
-          (<View style={{ backgroundColor: 'white' }}>
-            <Text style={{ color: 'black' }}>{item.title}</Text>
-          </View>)}
-        />
-
-        {/* <ListComponent data={data || []} /> */}
+        <ListComponent data={data || []} />
       </SafeAreaView>
     </TouchableWithoutFeedback >
   );

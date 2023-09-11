@@ -8,6 +8,7 @@ const LoginInput = ({ setEmail, setPassword }: any) => {
       <TextInput
         style={styles.txt}
         placeholder="ਈ - ਮੇਲ"
+        keyboardType="email-address"
         onChangeText={setEmail}
         placeholderTextColor="grey"
       />
@@ -26,7 +27,7 @@ export default LoginInput;
 
 const styles = StyleSheet.create({
   txt: {
-    color: "white",
+    color: "grey",
     width: width * 0.8,
     height: 60,
     padding: 10,

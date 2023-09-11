@@ -1,5 +1,5 @@
 import { Modal, View, Text, TouchableOpacity, StyleSheet, Dimensions } from "react-native";
-const {width, height}= Dimensions.get('window')
+const { width, height } = Dimensions.get('window')
 const ConfirmModal = ({ modalVisible, item, setModalVisible, onDelete }: any) => {
     return (
         <Modal animationType="slide" transparent={true} visible={modalVisible}>
@@ -11,18 +11,18 @@ const ConfirmModal = ({ modalVisible, item, setModalVisible, onDelete }: any) =>
                     <Text style={[styles.modalText, { fontSize: 14 }]}>
                         You want to Delete
                     </Text>
-                        <View style={styles.buttonRow}>
-                            <View style = {styles.btn}>
+                    <View style={styles.buttonRow}>
+                        <View style={styles.btn}>
                             <TouchableOpacity onPress={() => onDelete(item)}>
                                 <Text style={styles.textStyle}>Yes</Text>
                             </TouchableOpacity>
-                            </View>
-                            <View style = {styles.btn}>
+                        </View>
+                        <View style={styles.btn}>
                             <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
                                 <Text style={styles.textStyle}>Cancel</Text>
                             </TouchableOpacity>
-                            </View>
                         </View>
+                    </View>
                 </View>
             </View>
         </Modal>
@@ -54,12 +54,12 @@ const styles = StyleSheet.create({
         color: "white",
         fontSize: 16,
         fontFamily: "Rubik-Regular",
-        textAlign:'center',
+        textAlign: 'center',
     },
     modalText: {
         textAlign: "center",
-        alignSelf:'center',
-        top:20,
+        alignSelf: 'center',
+        top: 20,
         fontSize: 22,
         color: "rgba(255, 255, 255, 1)",
         fontFamily: "Rubik-Regular",
@@ -68,12 +68,13 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: 'space-around',
     },
-    btn:{
-        flex:1,
-        justifyContent:'center', 
-        top:50,
-        borderWidth:1,
-        borderColor:"rgb(54,54,54)"
+    btn: {
+        flex: 1,
+        justifyContent: 'center',
+        borderTopWidth: 1,
+        borderRightWidth: 1,
+        marginTop: height * 0.087,
+        borderColor: "rgb(54,54,54)",
     }
 });
 export default ConfirmModal;

@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
-import { ScrollView, StyleSheet, Pressable, TouchableOpacity} from "react-native";
+import { ScrollView, StyleSheet, Pressable, TouchableOpacity } from "react-native";
 import { Button, Dialog, Portal, TextInput } from "react-native-paper";
-import InfinitePager, {InfinitePagerImperativeApi} from "react-native-infinite-pager";
+import InfinitePager, { InfinitePagerImperativeApi } from "react-native-infinite-pager";
 import * as Animatable from "react-native-animatable";
 import { FlatList, State, TapGestureHandler } from "react-native-gesture-handler";
 import EditScreenInfo from "../components/EditScreenInfo";
@@ -27,7 +27,7 @@ function Ang({ page, setAngId }: RootTabScreenProps<"TabOne">) {
       }
     });
 
-    return () => {};
+    return () => { };
   }, []);
 
   const ang = useAng(
@@ -89,11 +89,10 @@ function Ang({ page, setAngId }: RootTabScreenProps<"TabOne">) {
         </Text>
       </Button>
       <FlatList style={styles.container}
-        data = {ang.data?.page}
+        data={ang.data?.page}
         decelerationRate="fast"
         showsVerticalScrollIndicator={false}
-        keyExtractor={(page)=>{page.line.id}}
-        renderItem ={(page) => (
+        renderItem={(page) => (
           <View>
             <TapGestureHandler
               ref={doubleTapRef}
@@ -102,8 +101,9 @@ function Ang({ page, setAngId }: RootTabScreenProps<"TabOne">) {
                   title: page.item.line.gurmukhi.unicode,
                   arth: page.item.line.translation.punjabi.default.unicode,
                   ang: page.item.line.pageno,
+                  lineno: page.item.line.lineno,
                   hindi: page.item.line.transliteration.devanagari.text,
-                  english:page.item.line.translation.english.default,
+                  english: page.item.line.translation.english.default,
                 });
               }}
               numberOfTaps={2}
@@ -170,7 +170,7 @@ export default function TabOneScreen() {
       });
       setDisplayPage(true);
     }, 1000);
-    return () => {};
+    return () => { };
   }, [infinitePager.current]);
 
   return (
@@ -203,7 +203,7 @@ export default function TabOneScreen() {
               AsyncStorage.setItem("lastAng", `${page}`);
             }
           }}
-          
+
         />
       </View>
       {displayPortal && (

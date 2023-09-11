@@ -1,12 +1,13 @@
 import { TextInput, StyleSheet, Dimensions, View } from "react-native";
 const { height, width } = Dimensions.get("window");
-const RegInput = ({
-  setFullName,
-  setAddress,
-  setPhone,
-  setEmail,
-  setPassword,
-}: any) => {
+interface input {
+  setFullName: string;
+  setAddress: string;
+  setPhone: number;
+  setEmail: string;
+  setPassword: string
+}
+const RegInput = ({ setFullName, setAddress, setPhone, setEmail, setPassword }: input) => {
   return (
     <View>
       <TextInput
@@ -24,6 +25,7 @@ const RegInput = ({
       <TextInput
         style={styles.txt}
         placeholder="Mobile Number"
+        keyboardType="phone-pad"
         onChangeText={setPhone}
         placeholderTextColor="grey"
       />
@@ -31,6 +33,7 @@ const RegInput = ({
       <TextInput
         style={styles.txt}
         placeholder=" ਈ - ਮੇਲ "
+        keyboardType="email-address"
         onChangeText={setEmail}
         placeholderTextColor="grey"
       />
@@ -48,8 +51,8 @@ export default RegInput;
 const styles = StyleSheet.create({
   txt: {
     width: width * 0.8,
-
-    height: 50,
+    color: 'grey',
+    height: 40,
     borderRadius: 15,
     padding: 10,
     marginTop: 20,

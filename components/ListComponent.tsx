@@ -1,6 +1,6 @@
-import {Pressable, StyleSheet, Text, View, TouchableOpacity, Dimensions, TouchableWithoutFeedback } from "react-native";
+import { Pressable, StyleSheet, Text, View, TouchableOpacity, Dimensions } from "react-native";
 import React, { useState } from "react";
-import { Gesture, FlatList, PanGestureHandler, PanGestureHandlerGestureEvent, GestureDetector } from "react-native-gesture-handler";
+import { Gesture, FlatList, PanGestureHandler, PanGestureHandlerGestureEvent } from "react-native-gesture-handler";
 import Animated, { useAnimatedGestureHandler, useAnimatedStyle, useSharedValue, withSpring } from "react-native-reanimated";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useDeleteBookmark } from "../data/bookmark/mutation";
@@ -18,7 +18,7 @@ const ListComponent = ({ data }: any) => {
   const handleDelete = async (id) => deleteBookmark.mutateAsync(id);
   if (deleteBookmark.isLoading)
     return <ActivityIndicator animating size={"large"} />;
-    const nativeGesture = Gesture.Native().shouldActivateOnStart(true);
+  const nativeGesture = Gesture.Native().shouldActivateOnStart(true);
 
   return (
     <FlatList
@@ -75,9 +75,10 @@ const ListItem = ({ item, onDelete }: any) => {
         <Animated.View style={[styles.insidecontainer, rStyle]}>
           <ConfirmModal modalVisible={modalVisible} setModalVisible={setModalVisible} onDelete={onDelete} />
           <View style={{ flex: 1, flexDirection: "row", marginRight: 5 }}>
-            <Modal style={{ margin: 0 }} animationIn="slideInUp" swipeDirection={'down'} onSwipeCancel={() => setModalVisible1(false)} isVisible={modalVisible1} customBackdrop={<TouchableWithoutFeedback onPress={() => setModalVisible1(false)}>
-              <View style={{ flex: 1 }} />
-            </TouchableWithoutFeedback>}>
+            <Modal style={{ margin: 0 }} animationIn="slideInUp" swipeDirection={'down'} onSwipeCancel={() => setModalVisible1(false)} isVisible={modalVisible1} customBackdrop={
+              <TouchableOpacity onPress={() => setModalVisible1(false)}>
+                <View style={{ flex: 1 }} />
+              </TouchableOpacity>}>
               <View >
                 <View style={{
                   backgroundColor: "rgba(24,24,24, 1)",
@@ -93,6 +94,7 @@ const ListItem = ({ item, onDelete }: any) => {
                   <Text style={{ fontFamily: "GurbaniAkhar", fontSize: 17, textAlign: 'justify', color: White }}>{item.arth}</Text>
                   <Text style={{ fontFamily: "Lora-Regular", fontSize: 17, textAlign: 'justify', color: "orange", fontWeight: "bold" }}>English:</Text>
                   <Text style={{ fontFamily: "Lora-Regular", fontSize: 17, textAlign: 'justify', color: White }}>{item.english}</Text>
+                  <Text style={{ fontFamily: "GurbaniAkharHeavy", fontSize: 20, textAlign: 'right', color: White }}>AMg: {item.ang}</Text>
                 </View>
               </View>
             </Modal>
