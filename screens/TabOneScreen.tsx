@@ -1,18 +1,9 @@
 import { useRef, useState } from "react";
-import {
-  Dimensions,
-  ScrollView,
-  StyleSheet,
-  Pressable,
-  TouchableOpacity,
-} from "react-native";
+import { ScrollView, StyleSheet, Pressable, TouchableOpacity} from "react-native";
 import { Button, Dialog, Portal, TextInput } from "react-native-paper";
-import InfinitePager, {
-  InfinitePagerImperativeApi,
-} from "react-native-infinite-pager";
+import InfinitePager, {InfinitePagerImperativeApi} from "react-native-infinite-pager";
 import * as Animatable from "react-native-animatable";
-import { State, TapGestureHandler } from "react-native-gesture-handler";
-
+import { FlatList, State, TapGestureHandler } from "react-native-gesture-handler";
 import EditScreenInfo from "../components/EditScreenInfo";
 import { Text, View } from "../components/Themed";
 import { useAng } from "../data/ang/query";
@@ -36,7 +27,7 @@ function Ang({ page, setAngId }: RootTabScreenProps<"TabOne">) {
       }
     });
 
-    return () => { };
+    return () => {};
   }, []);
 
   const ang = useAng(
@@ -52,6 +43,7 @@ function Ang({ page, setAngId }: RootTabScreenProps<"TabOne">) {
 
   const onDoubleTapEvent = (event: any, data) => {
     if (event.nativeEvent.state === State.ACTIVE) {
+      console.log("double tap 1");
       addBookmark.mutateAsync(data);
     }
   };
@@ -96,19 +88,22 @@ function Ang({ page, setAngId }: RootTabScreenProps<"TabOne">) {
           Ang: {ang.data?.pageno}
         </Text>
       </Button>
-      <ScrollView style={styles.container}>
-        {ang.data?.page?.map((page) => (
-          <View key={page.line.id}>
+      <FlatList style={styles.container}
+        data = {ang.data?.page}
+        decelerationRate="fast"
+        showsVerticalScrollIndicator={false}
+        keyExtractor={(page)=>{page.line.id}}
+        renderItem ={(page) => (
+          <View>
             <TapGestureHandler
               ref={doubleTapRef}
               onHandlerStateChange={(e) => {
                 onDoubleTapEvent(e, {
-                  title: page.line.gurmukhi.unicode,
-                  arth: page.line.translation.punjabi.default.akhar,
-                  hindi: page.line.transliteration.devanagari.text,
-                  english: page.line.translation.english.default,
-                  ang: page.line.pageno,
-                  lineno: page.line.lineno,
+                  title: page.item.line.gurmukhi.unicode,
+                  arth: page.item.line.translation.punjabi.default.unicode,
+                  ang: page.item.line.pageno,
+                  hindi: page.item.line.transliteration.devanagari.text,
+                  english:page.item.line.translation.english.default,
                 });
               }}
               numberOfTaps={2}
@@ -122,17 +117,17 @@ function Ang({ page, setAngId }: RootTabScreenProps<"TabOne">) {
                       textAlign: "center",
                     }}
                   >
-                    {page.line.gurmukhi.unicode}
+                    {page.item.line.gurmukhi.unicode}
                   </Text>
                 </TouchableOpacity>
               </Pressable>
             </TapGestureHandler>
             <Text style={{ fontSize: 20 }}>
-              {page.line.translation.punjabi.default.unicode}
+              {page.item.line.translation.punjabi.default.unicode}
             </Text>
           </View>
-        ))}
-      </ScrollView>
+        )}
+      />
     </View>
   );
 }
@@ -175,7 +170,7 @@ export default function TabOneScreen() {
       });
       setDisplayPage(true);
     }, 1000);
-    return () => { };
+    return () => {};
   }, [infinitePager.current]);
 
   return (
@@ -208,6 +203,7 @@ export default function TabOneScreen() {
               AsyncStorage.setItem("lastAng", `${page}`);
             }
           }}
+          
         />
       </View>
       {displayPortal && (
