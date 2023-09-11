@@ -9,12 +9,14 @@ const LoginInput = ({ setEmail, setPassword }: any) => {
         style={styles.txt}
         placeholder="ਈ - ਮੇਲ"
         keyboardType="email-address"
+        autoCapitalize="none"
         onChangeText={setEmail}
         placeholderTextColor="grey"
       />
       <TextInput
         style={styles.txt}
         placeholder="ਪਾਸਵਰਡ"
+        autoCapitalize="none"
         secureTextEntry
         placeholderTextColor="grey"
         onChangeText={setPassword}

@@ -1,20 +1,10 @@
 import React, { useCallback } from "react";
-import {
-  SafeAreaView,
-  StyleSheet,
-  TextInput,
-  Dimensions,
-  TouchableWithoutFeedback,
-  Keyboard,
-} from "react-native";
+import { SafeAreaView, StyleSheet, TextInput, Dimensions, TouchableWithoutFeedback, Keyboard, } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import ListComponent from "../components/ListComponent";
 import { useBookmarks } from "../data/bookmark/query";
 import { ActivityIndicator } from "react-native-paper";
 import { useFocusEffect } from "@react-navigation/native";
-import { FlatList } from "react-native-gesture-handler";
-import { View, Text } from "../components/Themed";
-import { color } from "react-native-reanimated";
 const { width } = Dimensions.get("window");
 
 const white = "rgb(200,200,200)";

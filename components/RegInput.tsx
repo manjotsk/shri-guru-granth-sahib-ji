@@ -34,6 +34,7 @@ const RegInput = ({ setFullName, setAddress, setPhone, setEmail, setPassword }: 
         style={styles.txt}
         placeholder=" ਈ - ਮੇਲ "
         keyboardType="email-address"
+        autoCapitalize="none"
         onChangeText={setEmail}
         placeholderTextColor="grey"
       />
@@ -41,6 +42,7 @@ const RegInput = ({ setFullName, setAddress, setPhone, setEmail, setPassword }: 
         style={styles.txt}
         secureTextEntry
         placeholder="ਪਾਸਵਰਡ"
+        autoCapitalize="none"
         onChangeText={setPassword}
         placeholderTextColor="grey"
       />
