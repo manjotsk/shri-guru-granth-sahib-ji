@@ -12,6 +12,9 @@ import ListComponent from "../components/ListComponent";
 import { useBookmarks } from "../data/bookmark/query";
 import { ActivityIndicator } from "react-native-paper";
 import { useFocusEffect } from "@react-navigation/native";
+import { FlatList } from "react-native-gesture-handler";
+import { View, Text } from "../components/Themed";
+import { color } from "react-native-reanimated";
 const { width } = Dimensions.get("window");
 
 const white = "rgb(200,200,200)";
@@ -27,7 +30,8 @@ const Bookmark = () => {
   if (bookmarks.isLoading) {
     return <ActivityIndicator animating size={"large"} />;
   }
-  const data = bookmarks?.data?.data[0].data;
+  const data = bookmarks?.data?.data[0];
+  console.log(data);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
@@ -42,10 +46,17 @@ const Bookmark = () => {
           returnKeyType="next"
           blurOnSubmit={false}
         />
+        <FlatList
+          data={data}
+          renderItem={(item) =>
+          (<View style={{ backgroundColor: 'white' }}>
+            <Text style={{ color: 'black' }}>{item.title}</Text>
+          </View>)}
+        />
 
-        <ListComponent data={data || []} />
+        {/* <ListComponent data={data || []} /> */}
       </SafeAreaView>
-    </TouchableWithoutFeedback>
+    </TouchableWithoutFeedback >
   );
 };
 

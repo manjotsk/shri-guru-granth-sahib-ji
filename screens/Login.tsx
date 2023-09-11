@@ -75,10 +75,10 @@ const Login = ({ navigation }: any) => {
     <Bookmark />
   ) : (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <KeyboardAvoidingView style={{ justifyContent: "center", alignSelf: "center" }}
+      <KeyboardAvoidingView style={styles.container}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={{ marginBottom: 200 }} >
           <StatusBar backgroundColor="#000" />
           <Text
             style={{
@@ -97,13 +97,14 @@ const Login = ({ navigation }: any) => {
           <PressReg navigation={navigation} />
         </SafeAreaView>
       </KeyboardAvoidingView >
-    </TouchableWithoutFeedback>
+    </TouchableWithoutFeedback >
   );
 };
 export default Login;
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },

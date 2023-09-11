@@ -40,12 +40,11 @@ const Registration = ({ navigation }: any) => {
     mutate({ fullName, address, phone, email, password });
   };
   return (
-
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={styles.container}
-    >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.container}
+      >
         <SafeAreaView style={{ alignItems: 'center' }} >
           <StatusBar backgroundColor="#000" />
           <Text
@@ -67,15 +66,14 @@ const Registration = ({ navigation }: any) => {
           <RegBtn handleregistration={handleregistration} isLoading={isLoading} />
           <PressBtn navigation={navigation} />
         </SafeAreaView>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+      </KeyboardAvoidingView>
+    </TouchableWithoutFeedback>
   );
 };
 export default Registration;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginVertical: 20,
     alignItems: "center",
   }
 });

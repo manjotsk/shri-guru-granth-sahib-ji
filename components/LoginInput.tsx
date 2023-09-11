@@ -26,8 +26,9 @@ export default LoginInput;
 
 const styles = StyleSheet.create({
   txt: {
+    color: "white",
     width: width * 0.8,
-    height: 40,
+    height: 60,
     padding: 10,
     marginBottom: 10,
     borderBottomWidth: 1,

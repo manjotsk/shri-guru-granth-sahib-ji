@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     borderColor: "white",
     width: width * 0.5,
     padding: 10,
-    margin: height / 12,
+    alignSelf: 'center',
     borderRadius: 20,
   },
   btntxt: {
