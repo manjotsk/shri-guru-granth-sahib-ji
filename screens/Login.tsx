@@ -10,13 +10,21 @@ import IsLoginBtn from "../components/IsLoginBtn";
 import PressReg from "../components/PressReg";
 import { loginFlag } from "../store/auth";
 import { useMutation } from "react-query";
-
-const { height, width } = Dimensions.get("window");
 import { useAtom } from "jotai";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { authTokenAtom, checkTokenExpiration, isTokenExpiredAtom } from "../store/TokenAtom";
 
 const Login = ({ navigation }: any) => {
-  const [email, setEmail] = useState<any>("");
+
+  const [authToken, setAuthToken] = useAtom(authTokenAtom);
+  const [isTokenExpired] = useAtom(isTokenExpiredAtom);
+
+  // Use useEffect to check token expiration when the component mounts
+  useEffect(() => {
+    checkTokenExpiration();
+  }, []);
+  
+  const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<any>("");
   const [isLoggedIn, setIsLoggedIn] = useAtom(loginFlag);
 
@@ -50,6 +58,7 @@ const Login = ({ navigation }: any) => {
       if (res.data.token) {
         const authToken = res.data.token;
         await AsyncStorage.setItem("authToken", authToken);
+        setAuthToken(authToken);
         setIsLoggedIn(true);
         Alert.alert("Success", "Login Successfully");
         navigation.navigate("BookmarkScreen");
@@ -66,6 +75,7 @@ const Login = ({ navigation }: any) => {
       );
     }
   };
+
   const { mutate, isLoading } = useMutation(loginUser);
   const handleLogin = () => {
     mutate({ email, password });
