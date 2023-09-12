@@ -17,6 +17,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import Profile from "../screens/Profile";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { View, Text } from "../components/Themed";
 
 function CustomDrawerContent(props) {
   const [isLoggedIn, setisLoggedIn] = useAtom(loginFlag);
@@ -44,6 +45,9 @@ function CustomDrawerContent(props) {
           <MaterialCommunityIcons name="logout" color="green" size={size} />
         )}
       />
+      <View style={{ flex: 1, marginTop: "210%" }}>
+        <Text style={{ color: "grey" }}>Simbaquartz</Text>
+      </View>
     </DrawerContentScrollView>
   );
 }
@@ -108,6 +112,7 @@ export function RouterDrawer() {
               ),
             }}
           />
+
         </>
       )}
       {!isLoggedIn && (
@@ -143,8 +148,10 @@ export function RouterDrawer() {
               ),
             }}
           />
+
         </>
       )}
+
     </Drawer.Navigator>
   );
 }

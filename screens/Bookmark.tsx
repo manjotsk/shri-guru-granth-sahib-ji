@@ -1,12 +1,5 @@
 import React, { useCallback } from "react";
-import {
-  SafeAreaView,
-  StyleSheet,
-  TextInput,
-  Dimensions,
-  TouchableWithoutFeedback,
-  Keyboard,
-} from "react-native";
+import { SafeAreaView, StyleSheet, TextInput, Dimensions, TouchableWithoutFeedback, Keyboard, } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import ListComponent from "../components/ListComponent";
 import { useBookmarks } from "../data/bookmark/query";
@@ -27,8 +20,7 @@ const Bookmark = () => {
   if (bookmarks.isLoading) {
     return <ActivityIndicator animating size={"large"} />;
   }
-  const data = bookmarks?.data?.data[0].data;
-
+  const data = bookmarks?.data?.data[0]?.data;
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <SafeAreaView style={styles.container}>
@@ -42,10 +34,9 @@ const Bookmark = () => {
           returnKeyType="next"
           blurOnSubmit={false}
         />
-
         <ListComponent data={data || []} />
       </SafeAreaView>
-    </TouchableWithoutFeedback>
+    </TouchableWithoutFeedback >
   );
 };
 

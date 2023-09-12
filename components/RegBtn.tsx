@@ -10,7 +10,7 @@ import React from "react";
 const { height, width } = Dimensions.get("window");
 const RegBtn = ({ handleregistration, isLoading }: any) => {
   return (
-    <View style={{ margin: 50 }}>
+    <View>
       {isLoading ? (
         <ActivityIndicator size="large" color="#0000ff" />
       ) : (
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#E1372D",
     width: width * 0.4,
     padding: 10,
-    margin: 10,
+    margin: 5,
     borderRadius: 20,
   },
   btntxt: {
