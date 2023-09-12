@@ -20,8 +20,7 @@ const Bookmark = () => {
   if (bookmarks.isLoading) {
     return <ActivityIndicator animating size={"large"} />;
   }
-  const data = bookmarks?.data?.data[0].data;
-
+  const data = bookmarks?.data?.data[0]?.data;
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <SafeAreaView style={styles.container}>
