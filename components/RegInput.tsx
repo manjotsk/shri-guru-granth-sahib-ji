@@ -5,9 +5,10 @@ interface input {
   setAddress: string;
   setPhone: number;
   setEmail: string;
-  setPassword: string
+  setPassword: string;
+  setDob: any;
 }
-const RegInput = ({ setFullName, setAddress, setPhone, setEmail, setPassword }: input) => {
+const RegInput = ({ setFullName, setAddress, setPhone, setEmail, setPassword, setDob }: input) => {
   return (
     <View>
       <TextInput
@@ -36,6 +37,13 @@ const RegInput = ({ setFullName, setAddress, setPhone, setEmail, setPassword }: 
         keyboardType="email-address"
         autoCapitalize="none"
         onChangeText={setEmail}
+        placeholderTextColor="grey"
+      />
+      <TextInput
+        style={styles.txt}
+        placeholder="Date of Birth"
+
+        onChangeText={setDob}
         placeholderTextColor="grey"
       />
       <TextInput

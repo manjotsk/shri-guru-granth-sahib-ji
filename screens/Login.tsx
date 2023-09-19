@@ -91,7 +91,7 @@ const Login = ({ navigation }: any) => {
           </Text>
           <LoginInput setEmail={setEmail} setPassword={setPassword} />
           <IsLoginBtn handleLogin={handleLogin} isLoading={isLoading} />
-          <Pressable>
+          <Pressable onPress={() => navigation.navigate("ForgetPassword")} >
             <Text style={{ color: "blue" }}>Forget password?</Text>
           </Pressable>
           <PressReg navigation={navigation} />

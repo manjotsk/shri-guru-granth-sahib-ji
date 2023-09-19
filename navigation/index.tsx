@@ -28,6 +28,7 @@ import {
 } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
 import { RouterDrawer } from "./Drawer";
+import forgetpassword from "../screens/forgetpassword";
 
 export default function Navigation({
   colorScheme,
@@ -68,6 +69,11 @@ function RootNavigator() {
           name="NotFound"
           component={NotFoundScreen}
           options={{ title: "Oops!" }}
+        />
+        <Stack.Screen
+          name="ForgetPassword"
+          component={forgetpassword}
+          options={{ title: "ForgetPassword" }}
         />
         <Stack.Group screenOptions={{ presentation: "modal" }}>
           <Stack.Screen name="Modal" component={ModalScreen} />
