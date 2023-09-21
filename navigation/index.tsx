@@ -27,9 +27,9 @@ import {
   RootTabScreenProps,
 } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
+import Forgetpassword from "../screens/forgetpassword";
 import { RouterDrawer } from "./Drawer";
 import Resetpassword from "../screens/Reset-Password";
-import Forgetpassword from "../screens/forgetpassword";
 
 export default function Navigation({
   colorScheme,
