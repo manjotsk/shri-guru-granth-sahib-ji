@@ -27,8 +27,8 @@ import {
   RootTabScreenProps,
 } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
+import Forgetpassword from "../screens/forgetpassword";
 import { RouterDrawer } from "./Drawer";
-import forgetpassword from "../screens/Forgetpassword";
 import Resetpassword from "../screens/Reset-Password";
 
 export default function Navigation({
@@ -73,7 +73,7 @@ function RootNavigator() {
         />
         <Stack.Screen
           name="ForgetPassword"
-          component={forgetpassword}
+          component={Forgetpassword}
           options={{ title: "ForgetPassword" }}
         />
         <Stack.Screen
