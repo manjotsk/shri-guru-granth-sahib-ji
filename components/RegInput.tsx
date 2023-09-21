@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { TextInput, StyleSheet, Dimensions, View } from "react-native";
 const { height, width } = Dimensions.get("window");
 interface input {
@@ -6,9 +7,9 @@ interface input {
   setPhone: number;
   setEmail: string;
   setPassword: string;
-  setDob: any;
 }
-const RegInput = ({ setFullName, setAddress, setPhone, setEmail, setPassword, setDob }: input) => {
+const RegInput = ({ setFullName, setAddress, setPhone, setEmail, setPassword }: input) => {
+
   return (
     <View>
       <TextInput
@@ -23,6 +24,7 @@ const RegInput = ({ setFullName, setAddress, setPhone, setEmail, setPassword, se
         onChangeText={setAddress}
         placeholderTextColor="grey"
       />
+
       <TextInput
         style={styles.txt}
         placeholder="Mobile Number"
@@ -39,13 +41,7 @@ const RegInput = ({ setFullName, setAddress, setPhone, setEmail, setPassword, se
         onChangeText={setEmail}
         placeholderTextColor="grey"
       />
-      <TextInput
-        style={styles.txt}
-        placeholder="Date of Birth"
 
-        onChangeText={setDob}
-        placeholderTextColor="grey"
-      />
       <TextInput
         style={styles.txt}
         secureTextEntry

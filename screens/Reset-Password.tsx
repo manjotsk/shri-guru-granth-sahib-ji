@@ -6,8 +6,8 @@ import { useNavigation } from '@react-navigation/native';
 
 const { height, width } = Dimensions.get("window");
 
-const Forgetpassword = () => {
-    const [email, setEmail] = useState("");
+const Resetpassword = () => {
+    const [password, setPassword] = useState("");
     const navigation = useNavigation();
 
 
@@ -16,10 +16,13 @@ const Forgetpassword = () => {
             <View style={styles.container}>
                 <View style={styles.verification}>
                     <View>
-                        <Text style={{ fontSize: 25, fontWeight: "bold", textAlign: "center" }}>Forget Password</Text>
-                        <Text style={{ fontSize: 17, fontWeight: 'bold' }} >Email</Text>
-                        <TextInput placeholder='abc@example.com' keyboardType="email-address"
-                            autoCapitalize="none" onChangeText={setEmail} />
+                        <Text style={{ fontSize: 25, fontWeight: "bold", textAlign: "center" }}>Reset Password</Text>
+                        <Text style={{ fontSize: 17, fontWeight: 'bold' }} >Pasword</Text>
+                        <TextInput placeholder='******' keyboardType="email-address"
+                            onChangeText={setPassword} />
+                        <Text style={{ fontSize: 17, fontWeight: 'bold' }} >Confirm Pasword</Text>
+                        <TextInput placeholder='******' keyboardType="email-address"
+                            onChangeText={setPassword} />
                     </View>
                     <View style={{ flexDirection: "row", paddingTop: 15, justifyContent: "flex-end" }}>
                         <View style={{ justifyContent: "space-evenly", margin: 10 }}>
@@ -27,7 +30,7 @@ const Forgetpassword = () => {
                                 <Text style={{ fontSize: 15, textAlign: "center", color: "rgb(25, 75, 220)" }}>Cancel</Text>
                             </TouchableOpacity>
                         </View>
-                        <TouchableOpacity onPress={() => navigation.navigate("ResetPassword")} style={styles.btn}>
+                        <TouchableOpacity onPress={() => navigation.navigate("Loginscreen")} style={styles.btn}>
                             <Text style={{ fontSize: 15, textAlign: "center", color: "rgb(255,255,255)" }}>Send</Text>
                         </TouchableOpacity>
                     </View>
@@ -37,7 +40,7 @@ const Forgetpassword = () => {
     )
 }
 
-export default Forgetpassword
+export default Resetpassword
 
 const styles = StyleSheet.create({
     container: {
@@ -49,7 +52,7 @@ const styles = StyleSheet.create({
     verification: {
         borderRadius: 10,
         width: width * 0.9,
-        height: height * 0.25,
+        height: height * 0.35,
         padding: 10,
         elevation: 10,
     },
