@@ -9,15 +9,9 @@ import PressBtn from "../components/PressBtn";
 import { useMutation } from "react-query";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-interface value {
-  email: string;
-  phone: number;
-  password: string;
-  fullname: string;
-  address: string;
-}
 
-const Registration = ({ navigation }: any) => {
+
+const Registration = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState<number>(0);
   const [password, setPassword] = useState("");

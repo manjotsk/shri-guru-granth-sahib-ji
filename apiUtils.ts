@@ -2,8 +2,11 @@
  * Utility methods to be used for invoking API methods
  */
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/native";
 import Axios from "axios";
 import queryString from "querystring";
+import { Alert } from "react-native";
+import { log } from "react-native-reanimated";
 //  import { refresh } from "../services/user";
 
 export const hostname = () => {
@@ -118,7 +121,8 @@ export const callApi = ({
   query,
   body,
   apiHostUrl,
-}: CallApiType) =>
+}: CallApiType): Promise<object> =>
+
   new Promise((resolve, reject) => {
     callAxios({
       uriEndPoint,
@@ -127,19 +131,20 @@ export const callApi = ({
       body,
       apiHostUrl,
     })
-      .then((response) => {
-        return resolve(response.data);
+      .then((res) => {;
+        return resolve(res.data);
         // localStorage.setItem("timer", 1800);
       })
+      
       .catch(async (err) => {
-        console.log(err.message, "err");
+        console.log(err?.response?.status, "error");
         if (!err.response) {
           reject(err);
           return;
         }
-        if (err?.response?.status === 401) {
-          const refreshToken = await AsyncStorage.getItem("refreshToken");
-
+        else if (err?.response?.status === 401) {
+          const refreshToken =  await AsyncStorage.removeItem("authToken");
+          Alert.alert("Token Expired, Login again")
           //    refresh(refreshToken)
           //      .then(async (res: any) => {
           //        await AsyncStorage.setItem("refreshToken", res.refreshToken);
