@@ -28,8 +28,8 @@ import {
 } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
 import { RouterDrawer } from "./Drawer";
-import forgetpassword from "../screens/Forgetpassword";
 import Resetpassword from "../screens/Reset-Password";
+import Forgetpassword from "../screens/forgetpassword";
 
 export default function Navigation({
   colorScheme,
@@ -73,7 +73,7 @@ function RootNavigator() {
         />
         <Stack.Screen
           name="ForgetPassword"
-          component={forgetpassword}
+          component={Forgetpassword}
           options={{ title: "ForgetPassword" }}
         />
         <Stack.Screen
