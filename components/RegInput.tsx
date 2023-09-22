@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { TextInput, StyleSheet, Dimensions, View } from "react-native";
+import { TextInput, StyleSheet, Dimensions, View, Pressable, Text } from "react-native";
+import DateTimePicker from '@react-native-community/datetimepicker';
 const { height, width } = Dimensions.get("window");
 interface input {
   setFullName: string;
@@ -8,7 +8,7 @@ interface input {
   setEmail: string;
   setPassword: string;
 }
-const RegInput = ({ setFullName, setAddress, setPhone, setEmail, setPassword }: input) => {
+const RegInput = ({ setFullName, setAddress, setPhone, setEmail, setPassword, show, date, mode, onChange, showDatepicker }: input) => {
 
   return (
     <View>
@@ -24,7 +24,22 @@ const RegInput = ({ setFullName, setAddress, setPhone, setEmail, setPassword }: 
         onChangeText={setAddress}
         placeholderTextColor="grey"
       />
-
+      <Pressable onPress={showDatepicker}>
+        <Text>
+          style={styles.txt}
+          placeholder="Date of Birth"
+          placeholderTextColor="grey"
+        </Text>
+      </Pressable>
+      {show && (
+        <DateTimePicker
+          testID="dateTimePicker"
+          value={date}
+          mode={mode}
+          is24Hour={true}
+          onChange={onChange}
+        />
+      )}
       <TextInput
         style={styles.txt}
         placeholder="Mobile Number"

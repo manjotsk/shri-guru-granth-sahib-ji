@@ -9,14 +9,31 @@ import PressBtn from "../components/PressBtn";
 import { useMutation } from "react-query";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-
-
 const Registration = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState<number>(0);
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [address, setAddress] = useState("");
+  const [date, setDate] = useState(new Date(1598051730000));
+  const [mode, setMode] = useState('date');
+  const [show, setShow] = useState(false);
+
+  const onChange = (event: any, selectedDate: any) => {
+    const currentDate = selectedDate;
+    setShow(false);
+    setDate(currentDate);
+  };
+
+  const showMode = (currentMode) => {
+    setShow(true);
+    setMode(currentMode);
+  };
+
+  const showDatepicker = () => {
+    showMode('date');
+  };
+
 
   const registrationUser = async () => {
     if (!fullName || !address || !email || !password) {
@@ -64,6 +81,8 @@ const Registration = ({ navigation }) => {
             setPhone={setPhone}
             setEmail={setEmail}
             setPassword={setPassword}
+            mode={mode} date={date} onChange={onChange}
+            show={show} showDatepicker={showDatepicker}
           />
           <RegBtn handleregistration={handleregistration} isLoading={isLoading} />
           <PressBtn navigation={navigation} />

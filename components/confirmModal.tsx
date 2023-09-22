@@ -70,11 +70,11 @@ const styles = StyleSheet.create({
     },
     btn: {
         flex: 1,
-        justifyContent: 'center',
         borderTopWidth: 1,
         borderRightWidth: 1,
-        marginTop: height * 0.087,
+        marginTop: 65,
         borderColor: "rgb(54,54,54)",
+        backgroundColor: "rgba(74, 74, 74, 1)",
     }
 });
 export default ConfirmModal;
