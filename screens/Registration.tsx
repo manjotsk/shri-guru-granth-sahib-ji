@@ -1,5 +1,13 @@
-import { StyleSheet, Keyboard, TouchableWithoutFeedback, KeyboardAvoidingView, Platform, Alert, StatusBar } from "react-native";
-import { Text, } from "../components/Themed";
+import {
+  StyleSheet,
+  Keyboard,
+  TouchableWithoutFeedback,
+  KeyboardAvoidingView,
+  Platform,
+  Alert,
+  StatusBar,
+} from "react-native";
+import { Text } from "../components/Themed";
 import axios from "axios";
 import { useState } from "react";
 import SERVER from "../config/connection";
@@ -9,31 +17,12 @@ import PressBtn from "../components/PressBtn";
 import { useMutation } from "react-query";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const Registration = ({ navigation }) => {
+const Registration = ({ navigation }: any) => {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState<number>(0);
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [address, setAddress] = useState("");
-  const [date, setDate] = useState(new Date(1598051730000));
-  const [mode, setMode] = useState('date');
-  const [show, setShow] = useState(false);
-
-  const onChange = (event: any, selectedDate: any) => {
-    const currentDate = selectedDate;
-    setShow(false);
-    setDate(currentDate);
-  };
-
-  const showMode = (currentMode) => {
-    setShow(true);
-    setMode(currentMode);
-  };
-
-  const showDatepicker = () => {
-    showMode('date');
-  };
-
 
   const registrationUser = async () => {
     if (!fullName || !address || !email || !password) {
@@ -64,12 +53,12 @@ const Registration = ({ navigation }) => {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.container}
       >
-        <SafeAreaView style={{ alignItems: 'center' }} >
+        <SafeAreaView style={{ alignItems: "center" }}>
           <StatusBar backgroundColor="#000" />
           <Text
             style={{
               fontSize: 26,
-              textAlign: "center"
+              textAlign: "center",
             }}
           >
             ਵਾਹਿਗੁਰੂ ਜੀ ਕਾ ਖਾਲਸਾ।।{"\n"}
@@ -81,10 +70,11 @@ const Registration = ({ navigation }) => {
             setPhone={setPhone}
             setEmail={setEmail}
             setPassword={setPassword}
-            mode={mode} date={date} onChange={onChange}
-            show={show} showDatepicker={showDatepicker}
           />
-          <RegBtn handleregistration={handleregistration} isLoading={isLoading} />
+          <RegBtn
+            handleregistration={handleregistration}
+            isLoading={isLoading}
+          />
           <PressBtn navigation={navigation} />
         </SafeAreaView>
       </KeyboardAvoidingView>
@@ -96,5 +86,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-  }
+  },
 });

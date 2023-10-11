@@ -1,5 +1,11 @@
-import { TextInput, StyleSheet, Dimensions, View, Pressable, Text } from "react-native";
-import DateTimePicker from '@react-native-community/datetimepicker';
+import {
+  TextInput,
+  StyleSheet,
+  Dimensions,
+  View,
+  Pressable,
+  Text,
+} from "react-native";
 const { height, width } = Dimensions.get("window");
 interface input {
   setFullName: string;
@@ -8,8 +14,13 @@ interface input {
   setEmail: string;
   setPassword: string;
 }
-const RegInput = ({ setFullName, setAddress, setPhone, setEmail, setPassword, show, date, mode, onChange, showDatepicker }: input) => {
-
+const RegInput = ({
+  setFullName,
+  setAddress,
+  setPhone,
+  setEmail,
+  setPassword,
+}: input) => {
   return (
     <View>
       <TextInput
@@ -24,22 +35,7 @@ const RegInput = ({ setFullName, setAddress, setPhone, setEmail, setPassword, sh
         onChangeText={setAddress}
         placeholderTextColor="grey"
       />
-      <Pressable onPress={showDatepicker}>
-        <Text>
-          style={styles.txt}
-          placeholder="Date of Birth"
-          placeholderTextColor="grey"
-        </Text>
-      </Pressable>
-      {show && (
-        <DateTimePicker
-          testID="dateTimePicker"
-          value={date}
-          mode={mode}
-          is24Hour={true}
-          onChange={onChange}
-        />
-      )}
+
       <TextInput
         style={styles.txt}
         placeholder="Mobile Number"
@@ -72,13 +68,13 @@ export default RegInput;
 const styles = StyleSheet.create({
   txt: {
     width: width * 0.8,
-    color: 'grey',
+    color: "grey",
     height: 40,
     borderRadius: 15,
     padding: 10,
     marginTop: 20,
     bottom: 20,
     borderBottomWidth: 1,
-    borderBottomColor: "grey"
+    borderBottomColor: "grey",
   },
 });
