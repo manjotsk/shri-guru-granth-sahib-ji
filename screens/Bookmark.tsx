@@ -16,6 +16,7 @@ const { width } = Dimensions.get("window");
 
 const white = "rgb(200,200,200)";
 const Bookmark = () => {
+  const [searchQuery, setSearchQuery] = useState("");
   // useBookmarks
   const bookmarks = useBookmarks();
   useFocusEffect(
@@ -23,29 +24,27 @@ const Bookmark = () => {
       bookmarks.refetch();
     }, [])
   );
-
   if (bookmarks.isLoading) {
     return <ActivityIndicator animating size={"large"} />;
   }
   const data = bookmarks?.data?.data;
+  const handleSearch = (text) => {
+    setSearchQuery(text);
+  };
 
-  const [searchTerm, setSearchTerm] = useState("");
-  const [filteredList, setFilteredList] = useState(data);
+  // Filter data based on the search query
+  const filteredData = data
+    ? data.filter((item) => item.engAkhar.toLowerCase().includes(searchQuery))
+    : [];
 
-  useEffect(() => {
-    const newList = data.filter((list: { english: string }) =>
-      list.english.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    setFilteredList(newList);
-  }, [searchTerm]);
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <SafeAreaView style={styles.container}>
         <StatusBar hidden />
         <TextInput
           style={styles.input}
-          value={searchTerm}
-          onChangeText={setSearchTerm}
+          onChangeText={handleSearch}
+          value={searchQuery}
           placeholder="search keyword"
           placeholderTextColor="#fff"
           autoCapitalize="none"
@@ -53,7 +52,7 @@ const Bookmark = () => {
           returnKeyType="next"
           blurOnSubmit={false}
         />
-        <ListComponent data={filteredList || []} />
+        <ListComponent data={filteredData || []} />
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );

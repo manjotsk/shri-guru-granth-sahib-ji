@@ -69,7 +69,6 @@ const styles = StyleSheet.create({
   txt: {
     width: width * 0.8,
     color: "grey",
-    height: 40,
     borderRadius: 15,
     padding: 10,
     marginTop: 20,
