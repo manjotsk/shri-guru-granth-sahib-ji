@@ -1,65 +1,132 @@
-import { Dimensions, Keyboard, StyleSheet, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
-import React, { useState } from 'react';
-import { View, Text } from '../components/Themed';
-import { TextInput } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
+import {
+  SafeAreaView,
+  StyleSheet,
+  TextInput,
+  Dimensions,
+  Pressable,
+  TouchableWithoutFeedback,
+  Keyboard,
+  TouchableOpacity,
+} from "react-native";
+import React, { useRef, useState } from "react";
+import { EvilIcons } from "@expo/vector-icons";
+import { View, Text } from "../components/Themed";
+const { height, width } = Dimensions.get("screen");
 
-const { height, width } = Dimensions.get("window");
+const Forgetpassword = ({ navigation }: any) => {
+  const inputRefs = [useRef(null), useRef(null), useRef(null), useRef()];
+  const [inputs, setInputs] = useState(["", "", "", ""]);
 
-const Forgetpassword = () => {
-    const [email, setEmail] = useState("");
-    const navigation = useNavigation();
+  const handleInputChange = (text, index) => {
+    const updatedInputs = [...inputs];
+    updatedInputs[index] = text;
+    setInputs(updatedInputs);
 
+    // Check if the typed text is a number and move to the next input
+    if (/^\d+$/.test(text) && index < 3) {
+      inputRefs[index + 1].current.focus();
+    }
+  };
+  const submit = () => {
+    navigation.navigate("ResetPassword");
+  };
+  const text = "Verify";
 
-    return (
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-            <View style={styles.container}>
-                <View style={styles.verification}>
-                    <View>
-                        <Text style={{ fontSize: 25, fontWeight: "bold", textAlign: "center" }}>Forget Password</Text>
-                        <Text style={{ fontSize: 17, fontWeight: 'bold' }} >Email</Text>
-                        <TextInput placeholder='abc@example.com' keyboardType="email-address"
-                            autoCapitalize="none" onChangeText={setEmail} />
-                    </View>
-                    <View style={{ flexDirection: "row", paddingTop: 15, justifyContent: "flex-end" }}>
-                        <View style={{ justifyContent: "space-evenly", margin: 10 }}>
-                            <TouchableOpacity onPress={() => navigation.navigate("Loginscreen")}>
-                                <Text style={{ fontSize: 15, textAlign: "center", color: "rgb(25, 75, 220)" }}>Cancel</Text>
-                            </TouchableOpacity>
-                        </View>
-                        <TouchableOpacity onPress={() => navigation.navigate("ResetPassword")} style={styles.btn}>
-                            <Text style={{ fontSize: 15, textAlign: "center", color: "rgb(255,255,255)" }}>Send</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </View>
-        </TouchableWithoutFeedback >
-    )
-}
+  return (
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <View style={{ flex: 1 }}>
+        <View
+          style={{
+            margin: 20,
+          }}
+        >
+          <Text
+            style={{
+              fontWeight: "bold",
+              fontSize: 25,
+              textAlign: "center",
+              padding: 20,
+            }}
+          >
+            Verify Code
+          </Text>
+          <Text style={{ textAlign: "center", color: "rgb(200,200,200)" }}>
+            Please enter the code we just send to email{"\n"} example@gmail.com
+          </Text>
+        </View>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-evenly",
+            padding: 20,
+          }}
+        >
+          {inputs.map((text, index) => (
+            <TextInput
+              key={index}
+              ref={inputRefs[index]}
+              placeholder="-"
+              onChangeText={(text) => handleInputChange(text, index)}
+              value={text}
+              keyboardType="numeric"
+              placeholderTextColor={"black"}
+              textAlign="center"
+              maxLength={1}
+              style={styles.txtinput}
+            />
+          ))}
+        </View>
+        <View style={{ justifyContent: "center", padding: 10 }}>
+          <Text style={{ textAlign: "center" }}>Didn't receive OTP?</Text>
+          <Text
+            style={{
+              textAlign: "center",
+              fontWeight: "bold",
+              textDecorationLine: "underline",
+            }}
+          >
+            Resend Code
+          </Text>
+        </View>
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            padding: 10,
+          }}
+        >
+          <TouchableOpacity onPress={submit} style={styles.btn}>
+            <Text
+              style={{
+                textAlign: "center",
+                alignItems: "center",
+                color: "white",
+                fontSize: 20,
+              }}
+            >
+              {text}
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </TouchableWithoutFeedback>
+  );
+};
 
-export default Forgetpassword
+export default Forgetpassword;
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: 'center',
-        backgroundColor: 'rgb(74,74,74)'
-    },
-    verification: {
-        borderRadius: 10,
-        width: width * 0.9,
-        height: height * 0.25,
-        padding: 10,
-        elevation: 10,
-    },
-    btn: {
-        backgroundColor: "rgb(25,75,220)",
-        borderWidth: 1,
-        borderColor: "white",
-        width: width * 0.2,
-        padding: 10,
-        alignSelf: 'center',
-        borderRadius: 10,
-    },
-})
+  txtinput: {
+    padding: 15,
+    backgroundColor: "rgb(230,230,230)",
+    borderRadius: 10,
+    fontSize: 17,
+    width: width * 0.15,
+  },
+  btn: {
+    backgroundColor: "blue",
+    width: width * 0.85,
+    padding: 10,
+    borderRadius: 50,
+  },
+});

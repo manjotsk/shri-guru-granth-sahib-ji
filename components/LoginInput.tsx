@@ -4,7 +4,9 @@ import React from "react";
 const { width } = Dimensions.get("window");
 const LoginInput = ({ setEmail, setPassword }: any) => {
   return (
-    <>
+    <View
+      style={{ padding: 10, justifyContent: "center", alignItems: "center" }}
+    >
       <TextInput
         style={styles.txt}
         placeholder="ਈ - ਮੇਲ"
@@ -21,7 +23,7 @@ const LoginInput = ({ setEmail, setPassword }: any) => {
         placeholderTextColor="grey"
         onChangeText={setPassword}
       />
-    </>
+    </View>
   );
 };
 
@@ -35,6 +37,6 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 10,
     borderBottomWidth: 1,
-    borderBottomColor: "grey"
+    borderBottomColor: "grey",
   },
 });

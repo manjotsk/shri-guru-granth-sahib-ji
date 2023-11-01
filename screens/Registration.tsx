@@ -1,13 +1,13 @@
 import {
   StyleSheet,
   Keyboard,
-  TouchableWithoutFeedback,
-  KeyboardAvoidingView,
-  Platform,
+  Image,
   Alert,
   StatusBar,
+  Pressable,
+  TouchableWithoutFeedback,
 } from "react-native";
-import { Text } from "../components/Themed";
+import { Text, View } from "../components/Themed";
 import axios from "axios";
 import { useState } from "react";
 import SERVER from "../config/connection";
@@ -49,42 +49,84 @@ const Registration = ({ navigation }: any) => {
   };
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={styles.container}
+      <SafeAreaView
+        style={{ alignItems: "center", backgroundColor: "white", flex: 1 }}
       >
-        <SafeAreaView style={{ alignItems: "center" }}>
-          <StatusBar backgroundColor="#000" />
-          <Text
+        <StatusBar backgroundColor="#000" />
+        <Text
+          style={{
+            fontSize: 26,
+            textAlign: "center",
+          }}
+        >
+          ਵਾਹਿਗੁਰੂ ਜੀ ਕਾ ਖਾਲਸਾ।।{"\n"}
+          ਵਾਹਿਗੁਰੂ ਜੀ ਕੀ ਫਤਿਹ।।
+        </Text>
+        <RegInput
+          setFullName={setFullName}
+          setAddress={setAddress}
+          setPhone={setPhone}
+          setEmail={setEmail}
+          setPassword={setPassword}
+        />
+        <RegBtn handleregistration={handleregistration} isLoading={isLoading} />
+        <PressBtn navigation={navigation} />
+
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            alignContent: "space-between",
+            margin: 20,
+          }}
+        >
+          <View
             style={{
-              fontSize: 26,
-              textAlign: "center",
+              borderWidth: 1,
+              borderColor: "rgb(200,200,200)",
+              height: 1,
+              width: 80,
+            }}
+          />
+          <Text style={{ color: "rgb(200,200,200)" }}>or Sign Up</Text>
+          <View
+            style={{
+              borderWidth: 1,
+              height: 1,
+              width: 80,
+              borderColor: "rgb(200,200,200)",
+            }}
+          />
+        </View>
+        <View style={{ margin: 20 }}>
+          <Pressable
+            onPress={() => console.log("press")}
+            style={{
+              alignItems: "center",
+              padding: 13,
+              backgroundColor: "white",
+              width: 60,
+              height: 60,
+              borderWidth: 1,
+              borderRadius: 60,
             }}
           >
-            ਵਾਹਿਗੁਰੂ ਜੀ ਕਾ ਖਾਲਸਾ।।{"\n"}
-            ਵਾਹਿਗੁਰੂ ਜੀ ਕੀ ਫਤਿਹ।।
-          </Text>
-          <RegInput
-            setFullName={setFullName}
-            setAddress={setAddress}
-            setPhone={setPhone}
-            setEmail={setEmail}
-            setPassword={setPassword}
-          />
-          <RegBtn
-            handleregistration={handleregistration}
-            isLoading={isLoading}
-          />
-          <PressBtn navigation={navigation} />
-        </SafeAreaView>
-      </KeyboardAvoidingView>
+            <Image
+              style={styles.logo}
+              source={{
+                uri: "https://www.freepnglogos.com/uploads/google-logo-png/google-logo-png-suite-everything-you-need-know-about-google-newest-0.png",
+              }}
+            />
+          </Pressable>
+        </View>
+      </SafeAreaView>
     </TouchableWithoutFeedback>
   );
 };
 export default Registration;
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
+  logo: {
+    width: 30,
+    height: 30,
   },
 });

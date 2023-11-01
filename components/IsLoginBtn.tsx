@@ -6,15 +6,15 @@ import { ActivityIndicator, DarkTheme, DefaultTheme } from "react-native-paper";
 const { height, width } = Dimensions.get("window");
 const IsLoginBtn = ({ handleLogin, isLoading }: any) => {
   return (
-    <>
+    <View style={{ padding: 20 }}>
       {isLoading ? (
         <ActivityIndicator size="large" color="#E1372D" />
       ) : (
-        <TouchableOpacity style={[styles.btn,]} onPress={handleLogin}>
+        <TouchableOpacity style={[styles.btn]} onPress={handleLogin}>
           <Text style={styles.btntxt}>Sign In</Text>
         </TouchableOpacity>
       )}
-    </>
+    </View>
   );
 };
 
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     borderColor: "white",
     width: width * 0.5,
     padding: 10,
-    alignSelf: 'center',
+    alignSelf: "center",
     borderRadius: 20,
   },
   btntxt: {

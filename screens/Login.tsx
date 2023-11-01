@@ -1,4 +1,12 @@
-import { Alert, Dimensions, Keyboard, KeyboardAvoidingView, Platform, Pressable, StatusBar, TouchableWithoutFeedback, StyleSheet } from "react-native";
+import {
+  Alert,
+  Keyboard,
+  Pressable,
+  Image,
+  TouchableWithoutFeedback,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { Text, View } from "../components/Themed";
 import axios from "axios";
@@ -11,10 +19,8 @@ import PressReg from "../components/PressReg";
 import { loginFlag } from "../store/auth";
 import { useMutation } from "react-query";
 import { useAtom } from "jotai";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 const Login = ({ navigation }: any) => {
-
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<any>("");
   const [isLoggedIn, setIsLoggedIn] = useAtom(loginFlag);
@@ -75,11 +81,8 @@ const Login = ({ navigation }: any) => {
     <Bookmark />
   ) : (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <KeyboardAvoidingView style={styles.container}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-      >
-        <SafeAreaView style={{ marginBottom: 200 }} >
-          <StatusBar backgroundColor="#000" />
+      <View style={{ flex: 1 }}>
+        <View style={{ padding: 10, margin: 10 }}>
           <Text
             style={{
               fontSize: 26,
@@ -89,23 +92,95 @@ const Login = ({ navigation }: any) => {
             ਵਾਹਿਗੁਰੂ ਜੀ ਕਾ ਖਾਲਸਾ।।{"\n"}
             ਵਾਹਿਗੁਰੂ ਜੀ ਕੀ ਫਤਿਹ।।
           </Text>
-          <LoginInput setEmail={setEmail} setPassword={setPassword} />
-          <IsLoginBtn handleLogin={handleLogin} isLoading={isLoading} />
-          <Pressable onPress={() => navigation.navigate("ForgetPassword")} >
+        </View>
+        <LoginInput setEmail={setEmail} setPassword={setPassword} />
+        <IsLoginBtn handleLogin={handleLogin} isLoading={isLoading} />
+        <View
+          style={{
+            padding: 5,
+            alignItems: "flex-end",
+          }}
+        >
+          <Pressable onPress={() => navigation.navigate("ForgetPassword")}>
             <Text style={{ color: "blue" }}>Forget password?</Text>
           </Pressable>
-          <PressReg navigation={navigation} />
-        </SafeAreaView>
-      </KeyboardAvoidingView >
-    </TouchableWithoutFeedback >
+        </View>
+        <PressReg navigation={navigation} />
+        <View
+          style={{
+            padding: 10,
+            margin: 20,
+            flexDirection: "row",
+            justifyContent: "center",
+          }}
+        >
+          <View
+            style={{
+              borderWidth: 1,
+              width: 90,
+              height: 1,
+              alignSelf: "center",
+              borderColor: "rgb(220,220,220)",
+            }}
+          />
+          <Text style={{ textAlign: "center", color: "rgb(200,200,200)" }}>
+            or sign up with
+          </Text>
+          <View
+            style={{
+              borderWidth: 1,
+              width: 90,
+              height: 1,
+              alignSelf: "center",
+              borderColor: "rgb(220,220,220)",
+            }}
+          />
+        </View>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            padding: 10,
+          }}
+        >
+          <TouchableOpacity>
+            <Image
+              style={styles.logo}
+              source={{
+                uri: "https://ww2.freelogovectors.net/wp-content/uploads/2023/03/apple_logo-freelogovectors.net_-1.png",
+              }}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Image
+              style={styles.logo}
+              source={{
+                uri: "https://logowik.com/content/uploads/images/985_google_g_icon.jpg",
+              }}
+            />
+          </TouchableOpacity>
+
+          <TouchableOpacity>
+            <Image
+              style={styles.logo}
+              source={{
+                uri: "https://static.vecteezy.com/system/resources/previews/018/930/702/original/facebook-logo-facebook-icon-transparent-free-png.png",
+              }}
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 export default Login;
-
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+  logo: {
+    height: 60,
+    width: 60,
+    backgroundColor: "white",
+    borderWidth: 1,
+    borderRadius: 60,
+    margin: 10,
   },
 });
