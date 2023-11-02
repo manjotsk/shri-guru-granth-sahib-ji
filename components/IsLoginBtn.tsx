@@ -23,8 +23,6 @@ export default IsLoginBtn;
 const styles = StyleSheet.create({
   btn: {
     backgroundColor: "#E1372D",
-    borderWidth: 1,
-    borderColor: "white",
     width: width * 0.5,
     padding: 10,
     alignSelf: "center",
@@ -32,6 +30,7 @@ const styles = StyleSheet.create({
   },
   btntxt: {
     fontSize: 20,
+    color: "white",
     textAlign: "center",
     fontFamily: "Lora-Regular",
   },

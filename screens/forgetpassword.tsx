@@ -68,7 +68,7 @@ const Forgetpassword = ({ navigation }: any) => {
               placeholder="-"
               onChangeText={(text) => handleInputChange(text, index)}
               value={text}
-              keyboardType="numeric"
+              keyboardType="number-pad"
               placeholderTextColor={"black"}
               textAlign="center"
               maxLength={1}
@@ -98,10 +98,10 @@ const Forgetpassword = ({ navigation }: any) => {
           <TouchableOpacity onPress={submit} style={styles.btn}>
             <Text
               style={{
+                color: "#fff",
+                fontSize: 17,
                 textAlign: "center",
-                alignItems: "center",
-                color: "white",
-                fontSize: 20,
+                fontFamily: "Lora-Regular",
               }}
             >
               {text}
@@ -124,9 +124,10 @@ const styles = StyleSheet.create({
     width: width * 0.15,
   },
   btn: {
-    backgroundColor: "blue",
-    width: width * 0.85,
+    backgroundColor: "#E1372D",
+    width: width * 0.4,
     padding: 10,
-    borderRadius: 50,
+    margin: 5,
+    borderRadius: 20,
   },
 });
