@@ -1,5 +1,12 @@
-import React, { useCallback } from "react";
-import { SafeAreaView, StyleSheet, TextInput, Dimensions, TouchableWithoutFeedback, Keyboard, } from "react-native";
+import React, { useCallback, useEffect, useState } from "react";
+import {
+  SafeAreaView,
+  StyleSheet,
+  TextInput,
+  Dimensions,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from "react-native";
 import { StatusBar } from "expo-status-bar";
 import ListComponent from "../components/ListComponent";
 import { useBookmarks } from "../data/bookmark/query";
@@ -9,6 +16,7 @@ const { width } = Dimensions.get("window");
 
 const white = "rgb(200,200,200)";
 const Bookmark = () => {
+  const [searchQuery, setSearchQuery] = useState("");
   // useBookmarks
   const bookmarks = useBookmarks();
   useFocusEffect(
@@ -16,17 +24,27 @@ const Bookmark = () => {
       bookmarks.refetch();
     }, [])
   );
-
   if (bookmarks.isLoading) {
     return <ActivityIndicator animating size={"large"} />;
   }
   const data = bookmarks?.data?.data;
+  const handleSearch = (text) => {
+    setSearchQuery(text);
+  };
+
+  // Filter data based on the search query
+  const filteredData = data
+    ? data.filter((item) => item.engAkhar.toLowerCase().includes(searchQuery))
+    : [];
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <SafeAreaView style={styles.container}>
         <StatusBar hidden />
         <TextInput
           style={styles.input}
+          onChangeText={handleSearch}
+          value={searchQuery}
           placeholder="search keyword"
           placeholderTextColor="#fff"
           autoCapitalize="none"
@@ -34,9 +52,9 @@ const Bookmark = () => {
           returnKeyType="next"
           blurOnSubmit={false}
         />
-        <ListComponent data={data || []} />
+        <ListComponent data={filteredData || []} />
       </SafeAreaView>
-    </TouchableWithoutFeedback >
+    </TouchableWithoutFeedback>
   );
 };
 

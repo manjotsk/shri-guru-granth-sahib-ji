@@ -30,6 +30,7 @@ import LinkingConfiguration from "./LinkingConfiguration";
 import Forgetpassword from "../screens/forgetpassword";
 import { RouterDrawer } from "./Drawer";
 import Resetpassword from "../screens/Reset-Password";
+import UpdateUser from "../screens/UpdateUser";
 
 export default function Navigation({
   colorScheme,
@@ -60,6 +61,11 @@ function RootNavigator() {
           name="Drawer"
           component={RouterDrawer}
           options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="UpdateUser"
+          component={UpdateUser}
+          options={{ title: "Update User" }}
         />
         <Stack.Screen
           name="Root"

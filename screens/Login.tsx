@@ -1,23 +1,39 @@
-import { Alert, Dimensions, Keyboard, KeyboardAvoidingView, Platform, Pressable, StatusBar, TouchableWithoutFeedback, StyleSheet } from "react-native";
+import {
+  Alert,
+  Keyboard,
+  Pressable,
+  Image,
+  TouchableWithoutFeedback,
+  StyleSheet,
+  TouchableOpacity,
+  TextInput,
+  Dimensions,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { Text, View } from "../components/Themed";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Bookmark from "./Bookmark";
 import SERVER from "../config/connection";
-import LoginInput from "../components/LoginInput";
 import IsLoginBtn from "../components/IsLoginBtn";
 import PressReg from "../components/PressReg";
 import { loginFlag } from "../store/auth";
 import { useMutation } from "react-query";
 import { useAtom } from "jotai";
+import { Feather } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
+const { width } = Dimensions.get("window");
 
 const Login = ({ navigation }: any) => {
-
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<any>("");
   const [isLoggedIn, setIsLoggedIn] = useAtom(loginFlag);
+
+  const [isPasswordVisible, setPasswordVisible] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!isPasswordVisible);
+  };
 
   useEffect(() => {
     checkLoggedInStatus();
@@ -75,11 +91,10 @@ const Login = ({ navigation }: any) => {
     <Bookmark />
   ) : (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <KeyboardAvoidingView style={styles.container}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
+      <SafeAreaView
+        style={{ alignItems: "center", backgroundColor: "white", flex: 1 }}
       >
-        <SafeAreaView style={{ marginBottom: 200 }} >
-          <StatusBar backgroundColor="#000" />
+        <View style={{ padding: 10, margin: 10 }}>
           <Text
             style={{
               fontSize: 26,
@@ -89,23 +104,136 @@ const Login = ({ navigation }: any) => {
             ਵਾਹਿਗੁਰੂ ਜੀ ਕਾ ਖਾਲਸਾ।।{"\n"}
             ਵਾਹਿਗੁਰੂ ਜੀ ਕੀ ਫਤਿਹ।।
           </Text>
-          <LoginInput setEmail={setEmail} setPassword={setPassword} />
-          <IsLoginBtn handleLogin={handleLogin} isLoading={isLoading} />
-          <Pressable onPress={() => navigation.navigate("ForgetPassword")} >
+        </View>
+        <View>
+          <TextInput
+            style={styles.txt}
+            placeholder="ਈ - ਮੇਲ"
+            keyboardType="email-address"
+            autoCapitalize="none"
+            onChangeText={setEmail}
+            placeholderTextColor="grey"
+          />
+          <View style={{ flexDirection: "row" }}>
+            <TextInput
+              style={styles.txt}
+              secureTextEntry={!isPasswordVisible}
+              placeholder="ਪਾਸਵਰਡ"
+              autoCapitalize="none"
+              onChangeText={setPassword}
+              placeholderTextColor="grey"
+            />
+            <TouchableOpacity onPress={togglePasswordVisibility}>
+              <Feather
+                style={{
+                  textAlign: "right",
+                  paddingTop: 20,
+                  right: 30,
+                  color: "grey",
+                }}
+                name={isPasswordVisible ? "eye-off" : "eye"}
+                size={30}
+                color="rgb(30,30,30)"
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        <IsLoginBtn handleLogin={handleLogin} isLoading={isLoading} />
+        <View
+          style={{
+            padding: 5,
+            alignItems: "flex-end",
+          }}
+        >
+          <Pressable onPress={() => navigation.navigate("ForgetPassword")}>
             <Text style={{ color: "blue" }}>Forget password?</Text>
           </Pressable>
-          <PressReg navigation={navigation} />
-        </SafeAreaView>
-      </KeyboardAvoidingView >
-    </TouchableWithoutFeedback >
+        </View>
+        <PressReg navigation={navigation} />
+        <View
+          style={{
+            padding: 10,
+            margin: 20,
+            flexDirection: "row",
+            justifyContent: "center",
+          }}
+        >
+          <View
+            style={{
+              borderWidth: 1,
+              width: 90,
+              height: 1,
+              alignSelf: "center",
+              borderColor: "rgb(220,220,220)",
+            }}
+          />
+          <Text style={{ textAlign: "center", color: "rgb(200,200,200)" }}>
+            or sign up with
+          </Text>
+          <View
+            style={{
+              borderWidth: 1,
+              width: 90,
+              height: 1,
+              alignSelf: "center",
+              borderColor: "rgb(220,220,220)",
+            }}
+          />
+        </View>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            padding: 10,
+          }}
+        >
+          <TouchableOpacity>
+            <Image
+              style={styles.logo}
+              source={{
+                uri: "https://ww2.freelogovectors.net/wp-content/uploads/2023/03/apple_logo-freelogovectors.net_-1.png",
+              }}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Image
+              style={styles.logo}
+              source={{
+                uri: "https://logowik.com/content/uploads/images/985_google_g_icon.jpg",
+              }}
+            />
+          </TouchableOpacity>
+
+          <TouchableOpacity>
+            <Image
+              style={styles.logo}
+              source={{
+                uri: "https://static.vecteezy.com/system/resources/previews/018/930/702/original/facebook-logo-facebook-icon-transparent-free-png.png",
+              }}
+            />
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
+    </TouchableWithoutFeedback>
   );
 };
 export default Login;
-
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+  logo: {
+    height: 60,
+    width: 60,
+    backgroundColor: "white",
+    borderWidth: 1,
+    borderRadius: 60,
+    margin: 10,
+  },
+  txt: {
+    width: width * 0.8,
+    color: "grey",
+    padding: 7,
+    marginTop: 4 * 5,
+    borderBottomWidth: 1,
+    borderBottomColor: "grey",
   },
 });
