@@ -6,6 +6,8 @@ import {
   TouchableWithoutFeedback,
   StyleSheet,
   TouchableOpacity,
+  TextInput,
+  Dimensions,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Text, View } from "../components/Themed";
@@ -13,17 +15,25 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Bookmark from "./Bookmark";
 import SERVER from "../config/connection";
-import LoginInput from "../components/LoginInput";
 import IsLoginBtn from "../components/IsLoginBtn";
 import PressReg from "../components/PressReg";
 import { loginFlag } from "../store/auth";
 import { useMutation } from "react-query";
 import { useAtom } from "jotai";
+import { Feather } from "@expo/vector-icons";
+import { SafeAreaView } from "react-native-safe-area-context";
+const { width } = Dimensions.get("window");
 
 const Login = ({ navigation }: any) => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<any>("");
   const [isLoggedIn, setIsLoggedIn] = useAtom(loginFlag);
+
+  const [isPasswordVisible, setPasswordVisible] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!isPasswordVisible);
+  };
 
   useEffect(() => {
     checkLoggedInStatus();
@@ -81,7 +91,9 @@ const Login = ({ navigation }: any) => {
     <Bookmark />
   ) : (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <View style={{ flex: 1 }}>
+      <SafeAreaView
+        style={{ alignItems: "center", backgroundColor: "white", flex: 1 }}
+      >
         <View style={{ padding: 10, margin: 10 }}>
           <Text
             style={{
@@ -93,7 +105,40 @@ const Login = ({ navigation }: any) => {
             ਵਾਹਿਗੁਰੂ ਜੀ ਕੀ ਫਤਿਹ।।
           </Text>
         </View>
-        <LoginInput setEmail={setEmail} setPassword={setPassword} />
+        <View>
+          <TextInput
+            style={styles.txt}
+            placeholder="ਈ - ਮੇਲ"
+            keyboardType="email-address"
+            autoCapitalize="none"
+            onChangeText={setEmail}
+            placeholderTextColor="grey"
+          />
+          <View style={{ flexDirection: "row" }}>
+            <TextInput
+              style={styles.txt}
+              secureTextEntry={!isPasswordVisible}
+              placeholder="ਪਾਸਵਰਡ"
+              autoCapitalize="none"
+              onChangeText={setPassword}
+              placeholderTextColor="grey"
+            />
+            <TouchableOpacity onPress={togglePasswordVisibility}>
+              <Feather
+                style={{
+                  textAlign: "right",
+                  paddingTop: 20,
+                  right: 30,
+                  color: "grey",
+                }}
+                name={isPasswordVisible ? "eye-off" : "eye"}
+                size={30}
+                color="rgb(30,30,30)"
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
+
         <IsLoginBtn handleLogin={handleLogin} isLoading={isLoading} />
         <View
           style={{
@@ -169,7 +214,7 @@ const Login = ({ navigation }: any) => {
             />
           </TouchableOpacity>
         </View>
-      </View>
+      </SafeAreaView>
     </TouchableWithoutFeedback>
   );
 };
@@ -182,5 +227,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 60,
     margin: 10,
+  },
+  txt: {
+    width: width * 0.8,
+    color: "grey",
+    padding: 7,
+    marginTop: 4 * 5,
+    borderBottomWidth: 1,
+    borderBottomColor: "grey",
   },
 });

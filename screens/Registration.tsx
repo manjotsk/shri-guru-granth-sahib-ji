@@ -20,6 +20,7 @@ import { useMutation } from "react-query";
 import { SafeAreaView } from "react-native-safe-area-context";
 import PhoneInput from "react-native-phone-input";
 import DatePicker from "react-native-ui-datepicker";
+import { Feather } from "@expo/vector-icons";
 
 import React from "react";
 
@@ -36,6 +37,11 @@ const Registration = ({ navigation }: any) => {
   const toggleDatePicker = () => {
     setShowDatePicker(!showDatePicker);
   };
+  const [isPasswordVisible, setPasswordVisible] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!isPasswordVisible);
+  };
 
   const registrationUser = async () => {
     if (!fullName || !address || !email || !password) {
@@ -43,7 +49,7 @@ const Registration = ({ navigation }: any) => {
       return;
     }
     try {
-      const res = await axios.post(SERVER + "/registration", {
+      const res = await axios.post(SERVER + "registration", {
         fullName: fullName,
         address: address,
         phone: phone,
@@ -51,9 +57,9 @@ const Registration = ({ navigation }: any) => {
         password: password,
       });
       Alert.alert("Success", "User saved successfully!");
-      navigation.navigate("Login screen");
+      navigation.navigate("Loginscreen");
     } catch (err) {
-      Alert.alert("Error", "Failed to save data. Please try again.");
+      Alert.alert("Error", "User already registered");
     }
   };
   const { mutate, isLoading } = useMutation(registrationUser);
@@ -127,15 +133,24 @@ const Registration = ({ navigation }: any) => {
             onChangeText={(text) => setEmail(text)}
             placeholderTextColor="grey"
           />
-
-          <TextInput
-            style={styles.txt}
-            secureTextEntry
-            placeholder="ਪਾਸਵਰਡ"
-            autoCapitalize="none"
-            onChangeText={setPassword}
-            placeholderTextColor="grey"
-          />
+          <View style={{ flexDirection: "row" }}>
+            <TextInput
+              style={styles.txt}
+              secureTextEntry={!isPasswordVisible}
+              placeholder="ਪਾਸਵਰਡ"
+              autoCapitalize="none"
+              onChangeText={setPassword}
+              placeholderTextColor="grey"
+            />
+            <TouchableOpacity onPress={togglePasswordVisibility}>
+              <Feather
+                style={{ paddingTop: 15, right: 30, color: "grey" }}
+                name={isPasswordVisible ? "eye-off" : "eye"}
+                size={30}
+                color="rgb(30,30,30)"
+              />
+            </TouchableOpacity>
+          </View>
         </View>
         <RegBtn handleregistration={handleregistration} isLoading={isLoading} />
         <PressBtn navigation={navigation} />
@@ -216,10 +231,8 @@ const styles = StyleSheet.create({
   txt: {
     width: width * 0.8,
     color: "grey",
-    borderRadius: 15,
-    padding: 10,
-    marginTop: 20,
-    bottom: 20,
+    padding: 7,
+    marginTop: 4 * 5,
     borderBottomWidth: 1,
     borderBottomColor: "grey",
   },
