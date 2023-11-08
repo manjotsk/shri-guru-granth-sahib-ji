@@ -1,13 +1,13 @@
 import {
   StyleSheet,
   Text,
-  Dimensions,
   TouchableOpacity,
   View,
   ActivityIndicator,
 } from "react-native";
 import React from "react";
-const { height, width } = Dimensions.get("window");
+import Theme from "../theme/Theme";
+import Layout from "../constants/Layout";
 const RegBtn = ({ handleregistration, isLoading }: any) => {
   return (
     <View>
@@ -26,15 +26,15 @@ export default RegBtn;
 
 const styles = StyleSheet.create({
   btn: {
-    backgroundColor: "#E1372D",
-    width: width * 0.4,
+    backgroundColor: Theme.color.Red,
+    width: Layout.window.width * 0.4,
     padding: 10,
     margin: 5,
     borderRadius: 20,
   },
   btntxt: {
-    color: "#fff",
-    fontSize: 17,
+    color: Theme.color.White,
+    fontSize: Theme.font.l,
     textAlign: "center",
     fontFamily: "Lora-Regular",
   },

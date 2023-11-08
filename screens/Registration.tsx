@@ -6,7 +6,6 @@ import {
   StatusBar,
   TouchableWithoutFeedback,
   TouchableOpacity,
-  Dimensions,
   TextInput,
 } from "react-native";
 import { Text, View } from "../components/Themed";
@@ -23,8 +22,8 @@ import DatePicker from "react-native-ui-datepicker";
 import { Feather } from "@expo/vector-icons";
 
 import React from "react";
-
-const { height, width } = Dimensions.get("window");
+import Theme from "../theme/Theme";
+import Layout from "../constants/Layout";
 
 const Registration = ({ navigation }: any) => {
   const [email, setEmail] = useState("");
@@ -73,7 +72,11 @@ const Registration = ({ navigation }: any) => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView
-        style={{ alignItems: "center", backgroundColor: "white", flex: 1 }}
+        style={{
+          alignItems: "center",
+          backgroundColor: Theme.color.White,
+          flex: 1,
+        }}
       >
         <StatusBar backgroundColor="#000" />
         <Text
@@ -89,19 +92,19 @@ const Registration = ({ navigation }: any) => {
           <TextInput
             style={styles.txt}
             placeholder="ਪੂਰਾ ਨਾਮ"
-            onChangeText={setFullName}
-            placeholderTextColor="grey"
+            onChangeText={(text) => setFullName(text)}
+            placeholderTextColor={Theme.color.Grey}
           />
           <TextInput
             style={styles.txt}
             placeholder="ਪੂਰਾ ਪਤਾ"
-            onChangeText={setAddress}
-            placeholderTextColor="grey"
+            onChangeText={(text) => setAddress(text)}
+            placeholderTextColor={Theme.color.Grey}
           />
           <PhoneInput
             value={phone}
             setValue="10"
-            textStyle={{ color: "grey" }}
+            textStyle={{ color: Theme.color.Grey }}
             onChangePhoneNumber={(text) => setPhone(text)}
             style={styles.txt}
             initialCountry="in"
@@ -110,7 +113,7 @@ const Registration = ({ navigation }: any) => {
             }}
           />
           <TouchableOpacity onPress={toggleDatePicker} style={styles.txt}>
-            <Text style={{ color: "grey" }}>
+            <Text style={{ color: Theme.color.Grey }}>
               {date ? dayjs(date).format("DD/MM/YYYY") : "DD/MM/YYYY"}
             </Text>
           </TouchableOpacity>
@@ -144,7 +147,7 @@ const Registration = ({ navigation }: any) => {
             />
             <TouchableOpacity onPress={togglePasswordVisibility}>
               <Feather
-                style={{ paddingTop: 15, right: 30, color: "grey" }}
+                style={{ paddingTop: 15, right: 30, color: Theme.color.Grey }}
                 name={isPasswordVisible ? "eye-off" : "eye"}
                 size={30}
                 color="rgb(30,30,30)"
@@ -223,17 +226,17 @@ const styles = StyleSheet.create({
   logo: {
     height: 60,
     width: 60,
-    backgroundColor: "white",
+    backgroundColor: Theme.color.White,
     borderWidth: 1,
     borderRadius: 60,
     margin: 10,
   },
   txt: {
-    width: width * 0.8,
-    color: "grey",
+    width: Layout.window.width * 0.8,
+    color: Theme.color.Grey,
     padding: 7,
     marginTop: 4 * 5,
     borderBottomWidth: 1,
-    borderBottomColor: "grey",
+    borderBottomColor: Theme.color.Grey,
   },
 });

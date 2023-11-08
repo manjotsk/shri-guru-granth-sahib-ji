@@ -10,10 +10,11 @@ import { useProfile } from "../data/profile/query";
 import { useFocusEffect } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { View, Text } from "../components/Themed";
+import Theme from "../theme/Theme";
+import Layout from "../constants/Layout";
 
-const { height, width } = Dimensions.get("window");
 const borderRadius = Platform.OS === "ios" ? 40 : 0;
-const GetProfile = ({ navigation }) => {
+const GetProfile = ({ navigation }: any) => {
   const profile = useProfile();
   useFocusEffect(
     useCallback(() => {
@@ -53,7 +54,6 @@ const GetProfile = ({ navigation }) => {
           onPress={() => navigation.navigate("UpdateUser")}
         >
           <Text style={[styles.txt, { color: "rgb(255,255,255)" }]}>
-            {" "}
             Update Profile
           </Text>
         </TouchableOpacity>
@@ -71,16 +71,16 @@ const styles = StyleSheet.create({
     padding: 10,
     borderBottomLeftRadius: borderRadius,
     borderBottomRightRadius: borderRadius,
-    height: height * 0.91,
+    height: Layout.window.height * 0.91,
   },
   txt: {
-    fontSize: 15,
+    fontSize: Theme.font.l,
     textAlign: "center",
     padding: 10,
     elevation: 20,
   },
   btn: {
-    backgroundColor: "rgb(22, 74,220)",
+    backgroundColor: Theme.color.Red,
     borderRadius: 10,
     alignSelf: "center",
     padding: 5,

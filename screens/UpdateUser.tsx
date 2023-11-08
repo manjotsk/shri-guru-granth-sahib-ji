@@ -1,5 +1,5 @@
 import {
-  Dimensions,
+  Alert,
   Keyboard,
   SafeAreaView,
   StyleSheet,
@@ -12,18 +12,39 @@ import PhoneInput from "react-native-phone-input";
 import React, { useState } from "react";
 import DatePicker from "react-native-ui-datepicker";
 import { View, Text } from "../components/Themed";
-const { height, width } = Dimensions.get("window");
+import Layout from "../constants/Layout";
+import Theme from "../theme/Theme";
+import useFormValidation from "../hooks/useFormValidation";
 const UpdateUser = () => {
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [password, setPassword] = useState("");
-  const [fullName, setFullName] = useState("");
-  const [address, setAddress] = useState("");
+  const {
+    email,
+    setEmail,
+    phone,
+    setPhone,
+    fullName,
+    setFullName,
+    address,
+    setAddress,
+    showPhoneError,
+    showEmailError,
+    showFullNameError,
+    showAddressError,
+    validateAllFields,
+  } = useFormValidation();
   const [date, setDate] = useState<any>(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const toggleDatePicker = () => {
     setShowDatePicker(!showDatePicker);
   };
+
+  const Update = () => {
+    if (validateAllFields()) {
+      // All fields are valid
+      Alert.alert("Update");
+      // Additional logic for updating the user
+    }
+  };
+
   const currentDate: any = new Date();
   const year: any = currentDate.getFullYear().toString().padStart(4, "0");
   const month: any = (currentDate.getMonth() + 1).toString().padStart(2, "0");
@@ -31,25 +52,39 @@ const UpdateUser = () => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView
-        style={{ alignItems: "center", backgroundColor: "white", flex: 1 }}
+        style={{
+          alignItems: "center",
+          backgroundColor: Theme.color.White,
+          flex: 1,
+        }}
       >
         <View>
           <TextInput
             style={styles.txt}
+            value={fullName}
             placeholder="ਪੂਰਾ ਨਾਮ"
-            onChangeText={setFullName}
-            placeholderTextColor="grey"
+            onChangeText={(text) => setFullName(text)}
+            placeholderTextColor={Theme.color.Grey}
           />
+          {showFullNameError && (
+            <Text style={{ color: Theme.color.Red }}>
+              Please enter full name
+            </Text>
+          )}
+
           <TextInput
             style={styles.txt}
+            value={address}
             placeholder="ਪੂਰਾ ਪਤਾ"
-            onChangeText={setAddress}
-            placeholderTextColor="grey"
+            onChangeText={(text) => setAddress(text)}
+            placeholderTextColor={Theme.color.Grey}
           />
+          {showAddressError && (
+            <Text style={{ color: Theme.color.Red }}>Please enter address</Text>
+          )}
           <PhoneInput
             value={phone}
-            setValue="10"
-            textStyle={{ color: "grey" }}
+            textStyle={{ color: Theme.color.Grey }}
             onChangePhoneNumber={(text) => setPhone(text)}
             style={styles.txt}
             initialCountry="in"
@@ -57,8 +92,13 @@ const UpdateUser = () => {
               placeholder: "Phone Number",
             }}
           />
+          {showPhoneError && (
+            <Text style={{ color: Theme.color.Red }}>
+              Please enter Phone Number
+            </Text>
+          )}
           <TouchableOpacity onPress={toggleDatePicker} style={styles.txt}>
-            <Text style={{ color: "grey" }}>
+            <Text style={{ color: Theme.color.Grey }}>
               {date ? dayjs(date).format("DD/MM/YYYY") : "DD/MM/YYYY"}
             </Text>
           </TouchableOpacity>
@@ -77,13 +117,17 @@ const UpdateUser = () => {
             style={styles.txt}
             placeholder=" ਈ - ਮੇਲ "
             keyboardType="email-address"
+            value={email}
             autoCapitalize="none"
             onChangeText={(text) => setEmail(text)}
-            placeholderTextColor="grey"
+            placeholderTextColor={Theme.color.Grey}
           />
+          {showEmailError && (
+            <Text style={{ color: Theme.color.Red }}>Please enter email</Text>
+          )}
         </View>
         <View style={{ padding: 10 }}>
-          <TouchableOpacity style={styles.btn}>
+          <TouchableOpacity style={styles.btn} onPress={() => Update()}>
             <Text style={styles.btntxt}>Update</Text>
           </TouchableOpacity>
         </View>
@@ -96,23 +140,23 @@ export default UpdateUser;
 
 const styles = StyleSheet.create({
   txt: {
-    width: width * 0.8,
-    color: "grey",
+    width: Layout.window.width * 0.8,
+    color: Theme.color.Grey,
     padding: 7,
     marginTop: 4 * 5,
     borderBottomWidth: 1,
-    borderBottomColor: "grey",
+    borderBottomColor: Theme.color.Grey,
   },
   btn: {
-    backgroundColor: "#E1372D",
-    width: width * 0.4,
+    backgroundColor: Theme.color.Red,
+    width: Layout.window.width * 0.4,
     padding: 10,
     margin: 5,
-    borderRadius: 20,
+    borderRadius: 4 * 5,
   },
   btntxt: {
-    color: "#fff",
-    fontSize: 17,
+    color: Theme.color.White,
+    fontSize: Theme.font.xl,
     textAlign: "center",
     fontFamily: "Lora-Regular",
   },

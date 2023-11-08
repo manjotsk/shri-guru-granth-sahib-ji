@@ -7,7 +7,6 @@ import {
   StyleSheet,
   TouchableOpacity,
   TextInput,
-  Dimensions,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Text, View } from "../components/Themed";
@@ -22,7 +21,8 @@ import { useMutation } from "react-query";
 import { useAtom } from "jotai";
 import { Feather } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
-const { width } = Dimensions.get("window");
+import Theme from "../theme/Theme";
+import Layout from "../constants/Layout";
 
 const Login = ({ navigation }: any) => {
   const [email, setEmail] = useState<string>("");
@@ -112,7 +112,7 @@ const Login = ({ navigation }: any) => {
             keyboardType="email-address"
             autoCapitalize="none"
             onChangeText={setEmail}
-            placeholderTextColor="grey"
+            placeholderTextColor={Theme.color.Grey}
           />
           <View style={{ flexDirection: "row" }}>
             <TextInput
@@ -121,7 +121,7 @@ const Login = ({ navigation }: any) => {
               placeholder="ਪਾਸਵਰਡ"
               autoCapitalize="none"
               onChangeText={setPassword}
-              placeholderTextColor="grey"
+              placeholderTextColor={Theme.color.Grey}
             />
             <TouchableOpacity onPress={togglePasswordVisibility}>
               <Feather
@@ -129,7 +129,7 @@ const Login = ({ navigation }: any) => {
                   textAlign: "right",
                   paddingTop: 20,
                   right: 30,
-                  color: "grey",
+                  color: Theme.color.Grey,
                 }}
                 name={isPasswordVisible ? "eye-off" : "eye"}
                 size={30}
@@ -223,17 +223,17 @@ const styles = StyleSheet.create({
   logo: {
     height: 60,
     width: 60,
-    backgroundColor: "white",
+    backgroundColor: Theme.color.White,
     borderWidth: 1,
     borderRadius: 60,
     margin: 10,
   },
   txt: {
-    width: width * 0.8,
-    color: "grey",
+    width: Layout.window.width * 0.8,
+    color: Theme.color.Grey,
     padding: 7,
     marginTop: 4 * 5,
     borderBottomWidth: 1,
-    borderBottomColor: "grey",
+    borderBottomColor: Theme.color.Grey,
   },
 });

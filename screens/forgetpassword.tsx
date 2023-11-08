@@ -1,17 +1,15 @@
 import {
-  SafeAreaView,
   StyleSheet,
   TextInput,
-  Dimensions,
-  Pressable,
   TouchableWithoutFeedback,
   Keyboard,
   TouchableOpacity,
 } from "react-native";
 import React, { useRef, useState } from "react";
-import { EvilIcons } from "@expo/vector-icons";
+
 import { View, Text } from "../components/Themed";
-const { height, width } = Dimensions.get("screen");
+import Layout from "../constants/Layout";
+import Theme from "../theme/Theme";
 
 const Forgetpassword = ({ navigation }: any) => {
   const inputRefs = [useRef(null), useRef(null), useRef(null), useRef()];
@@ -98,8 +96,8 @@ const Forgetpassword = ({ navigation }: any) => {
           <TouchableOpacity onPress={submit} style={styles.btn}>
             <Text
               style={{
-                color: "#fff",
-                fontSize: 17,
+                color: Theme.color.White,
+                fontSize: Theme.font.l,
                 textAlign: "center",
                 fontFamily: "Lora-Regular",
               }}
@@ -120,12 +118,12 @@ const styles = StyleSheet.create({
     padding: 15,
     backgroundColor: "rgb(230,230,230)",
     borderRadius: 10,
-    fontSize: 17,
-    width: width * 0.15,
+    fontSize: Theme.font.l,
+    width: Layout.window.width * 0.15,
   },
   btn: {
-    backgroundColor: "#E1372D",
-    width: width * 0.4,
+    backgroundColor: Theme.color.Red,
+    width: Layout.window.width * 0.4,
     padding: 10,
     margin: 5,
     borderRadius: 20,
