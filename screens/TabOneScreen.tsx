@@ -103,9 +103,9 @@ function Ang({ page, setAngId }: RootTabScreenProps<"TabOne">) {
                     <DataTable.Cell>
                       <View style={{display:'flex'}}>
                         <Text>{word}</Text>
-                        <Text style={{color:'grey', fontSize:10}}>({
-                          otherFaces?.map?.(({word})=>word)?.split?.()
-                        })</Text>
+                        {otherFaces?.length ?<Text style={{color:'grey', fontSize:10}}>({
+                          otherFaces?.map?.(({word})=>word)?.join()
+                        })</Text>:undefined}
                       </View>
 
                     </DataTable.Cell>

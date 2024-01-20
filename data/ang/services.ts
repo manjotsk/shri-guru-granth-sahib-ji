@@ -26,10 +26,10 @@ export const getKosh = async (words) => {
   const res = await callApi({
     uriEndPoint: {
       uri: "guru-kosh",
-      method: "GET",
+      method: "POST",
       version: "",
     },
-    query: { words: words || [] },
+    body: { words: words || [] },
     apiHostUrl: SERVER,
   });
   return res;
