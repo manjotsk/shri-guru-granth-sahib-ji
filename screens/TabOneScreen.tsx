@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import {
   ScrollView,
   StyleSheet,
@@ -17,19 +17,36 @@ import {
 } from "react-native-gesture-handler";
 import EditScreenInfo from "../components/EditScreenInfo";
 import { Text, View } from "../components/Themed";
-import { useAng } from "../data/ang/query";
+import { useAng, useKosh } from "../data/ang/query";
 import { RootTabScreenProps } from "../types";
 import { useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { loginFlag } from "../store/auth";
 import { useAtom } from "jotai";
 import { useAddBookmark } from "../data/bookmark/mutation";
+import {
+  BottomSheetModal,
+  BottomSheetModalProvider,
+} from "@gorhom/bottom-sheet";
+import { DataTable } from "react-native-paper";
 
 function keyExtractor(page: CreatePage) {
   return `${page.key}`;
 }
 
 function Ang({ page, setAngId }: RootTabScreenProps<"TabOne">) {
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+  const snapPoints = useMemo(() => ["25%", "50%"], []);
+  const [words, setWords] = useState([]);
+
+  const handlePresentModalPress = useCallback((line) => {
+    setWords(line?.split(" "))
+    bottomSheetModalRef.current?.present();
+  }, []);
+  const handleSheetChanges = useCallback((index: number) => {
+    console.log("handleSheetChanges", index);
+  }, []);
+
   const [, setIsLoggedIn] = useAtom(loginFlag);
   useEffect(() => {
     AsyncStorage.getItem("authToken").then((a) => {
@@ -51,6 +68,7 @@ function Ang({ page, setAngId }: RootTabScreenProps<"TabOne">) {
   const [angValue, setAngValue] = useState(page);
   const doubleTapRef = useRef(null);
   const addBookmark = useAddBookmark();
+  const kosh = useKosh(words);
 
   const onDoubleTapEvent = (event: any, data) => {
     if (event.nativeEvent.state === State.ACTIVE) {
@@ -62,6 +80,48 @@ function Ang({ page, setAngId }: RootTabScreenProps<"TabOne">) {
   return (
     <View style={{ flex: 1 }}>
       <Portal>
+        <BottomSheetModalProvider>
+          <BottomSheetModal
+            ref={bottomSheetModalRef}
+            index={1}
+            snapPoints={snapPoints}
+            onChange={handleSheetChanges}
+          >
+            {/* <View style={styles.contentContainer}> */}
+              <ScrollView>
+
+              <DataTable >
+                <DataTable.Header>
+                  <DataTable.Title>Word</DataTable.Title>
+                  <DataTable.Title numeric>Meaning</DataTable.Title>
+                  {/* <DataTable.Title numeric>Fat</DataTable.Title> */}
+                </DataTable.Header>
+
+                {kosh?.data?.map(({ _id, word, meaning , otherFaces}) => (
+                  <DataTable.Row key={_id}>
+
+                    <DataTable.Cell>
+                      <View style={{display:'flex'}}>
+                        <Text>{word}</Text>
+                        <Text style={{color:'grey', fontSize:10}}>({
+                          otherFaces?.map?.(({word})=>word)?.split?.()
+                        })</Text>
+                      </View>
+
+                    </DataTable.Cell>
+                    <DataTable.Cell >
+                      <View style={{display:'flex'}}>
+                        <Text>{meaning}</Text>
+                      </View>
+                    </DataTable.Cell>
+                    {/* <DataTable.Cell numeric>{item.fat}</DataTable.Cell> */}
+                  </DataTable.Row>
+                ))}
+              </DataTable>
+                </ScrollView>
+            {/* </View> */}
+          </BottomSheetModal>
+        </BottomSheetModalProvider>
         <Dialog visible={visible}>
           <TextInput
             label="Ang ID"
@@ -122,7 +182,11 @@ function Ang({ page, setAngId }: RootTabScreenProps<"TabOne">) {
               numberOfTaps={2}
             >
               <Pressable>
-                <TouchableOpacity>
+                <TouchableOpacity
+                  onLongPress={() => {
+                    handlePresentModalPress(page.item.line.gurmukhi.unicode);
+                  }}
+                >
                   <Text
                     style={{
                       fontSize: 30,
@@ -277,6 +341,17 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     marginBottom: 20,
   },
+  container1: {
+    flex: 1,
+    padding: 24,
+    justifyContent: "center",
+    backgroundColor: "grey",
+  },
+  contentContainer: {
+    flex: 1,
+    alignItems: "center",
+  },
+
   title: {
     fontSize: 20,
     fontWeight: "bold",
