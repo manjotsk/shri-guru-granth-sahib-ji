@@ -81,6 +81,7 @@ export function RouterDrawer() {
         <RadioButton.Group onValueChange={value => {
           setValue(value)
           i18n.changeLanguage(value)
+          hideModal()
         }} value={value}>
       <RadioButton.Item label="Punjabi" value="pa" />
       <RadioButton.Item label="English" value="en" />

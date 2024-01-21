@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Pressable,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import {
   ActivityIndicator,
@@ -76,10 +77,17 @@ function Ang({ page, setAngId }: RootTabScreenProps<"TabOne">) {
   const addBookmark = useAddBookmark();
   const kosh = useKosh(words);
 
-  const onDoubleTapEvent = (event: any, data) => {
+  const onDoubleTapEvent = async(event: any, data) => {
     if (event.nativeEvent.state === State.ACTIVE) {
       console.log("double tap 1");
-      addBookmark.mutateAsync(data);
+      try {
+        await addBookmark.mutateAsync(data);
+        Alert.alert("Bookmark Saved")
+        
+      } catch (error) {
+        Alert.alert("Bookmark Already Saved!")
+        
+      }
     }
   };
 
