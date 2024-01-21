@@ -5,7 +5,13 @@ import {
   Pressable,
   TouchableOpacity,
 } from "react-native";
-import { Button, Dialog, Portal, TextInput } from "react-native-paper";
+import {
+  ActivityIndicator,
+  Button,
+  Dialog,
+  Portal,
+  TextInput,
+} from "react-native-paper";
 import InfinitePager, {
   InfinitePagerImperativeApi,
 } from "react-native-infinite-pager";
@@ -40,7 +46,7 @@ function Ang({ page, setAngId }: RootTabScreenProps<"TabOne">) {
   const [words, setWords] = useState([]);
 
   const handlePresentModalPress = useCallback((line) => {
-    setWords(line?.split(" "))
+    setWords(line?.split(" "));
     bottomSheetModalRef.current?.present();
   }, []);
   const handleSheetChanges = useCallback((index: number) => {
@@ -87,38 +93,40 @@ function Ang({ page, setAngId }: RootTabScreenProps<"TabOne">) {
             snapPoints={snapPoints}
             onChange={handleSheetChanges}
           >
-            {/* <View style={styles.contentContainer}> */}
-              <ScrollView>
-
-              <DataTable >
+            <ScrollView>
+              <DataTable>
                 <DataTable.Header>
                   <DataTable.Title>Word</DataTable.Title>
                   <DataTable.Title numeric>Meaning</DataTable.Title>
                   {/* <DataTable.Title numeric>Fat</DataTable.Title> */}
                 </DataTable.Header>
 
-                {kosh?.data?.map(({ _id, word, meaning , otherFaces}) => (
-                  <DataTable.Row key={_id}>
-
-                    <DataTable.Cell>
-                      <View style={{display:'flex'}}>
-                        <Text>{word}</Text>
-                        {otherFaces?.length ?<Text style={{color:'grey', fontSize:10}}>({
-                          otherFaces?.map?.(({word})=>word)?.join()
-                        })</Text>:undefined}
-                      </View>
-
-                    </DataTable.Cell>
-                    <DataTable.Cell >
-                      <View style={{display:'flex'}}>
-                        <Text>{meaning}</Text>
-                      </View>
-                    </DataTable.Cell>
-                    {/* <DataTable.Cell numeric>{item.fat}</DataTable.Cell> */}
-                  </DataTable.Row>
-                ))}
+                {kosh.isFetching ? (
+                  <ActivityIndicator />
+                ) : (
+                  kosh?.data?.map(({ _id, word, meaning, otherFaces }) => (
+                    <DataTable.Row key={_id}>
+                      <DataTable.Cell>
+                        <View style={{ display: "flex" }}>
+                          <Text>{word}</Text>
+                          {otherFaces?.length ? (
+                            <Text style={{ color: "grey", fontSize: 10 }}>
+                              ({otherFaces?.map?.(({ word }) => word)?.join()})
+                            </Text>
+                          ) : undefined}
+                        </View>
+                      </DataTable.Cell>
+                      <DataTable.Cell>
+                        <View style={{ display: "flex" }}>
+                          <Text>{meaning}</Text>
+                        </View>
+                      </DataTable.Cell>
+                      {/* <DataTable.Cell numeric>{item.fat}</DataTable.Cell> */}
+                    </DataTable.Row>
+                  ))
+                )}
               </DataTable>
-                </ScrollView>
+            </ScrollView>
             {/* </View> */}
           </BottomSheetModal>
         </BottomSheetModalProvider>
@@ -240,8 +248,7 @@ export default function TabOneScreen() {
       setDisplayPortal(false);
     }, 4000);
     setTimeout(async () => {
-      let lastang = await AsyncStorage.getItem("lastAng");
-
+      let lastang = (await AsyncStorage.getItem("lastAng")) || 1;
       infinitePager.current?.setPage(+lastang, {
         animated: false,
       });
