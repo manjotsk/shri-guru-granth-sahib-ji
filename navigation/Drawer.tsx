@@ -18,6 +18,9 @@ import { useNavigation } from "@react-navigation/native";
 import Profile from "../screens/Profile";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { View, Text } from "../components/Themed";
+import { Button, Modal, Portal, RadioButton, Title } from "react-native-paper";
+import { useState } from "react";
+import i18n from "../i18n";
 
 function CustomDrawerContent(props) {
   const [isLoggedIn, setisLoggedIn] = useAtom(loginFlag);
@@ -55,10 +58,41 @@ const Drawer = createDrawerNavigator();
 
 export function RouterDrawer() {
   const [isLoggedIn] = useAtom(loginFlag);
+  const [visible, setVisible] = useState(false);
+
+  const showModal = () => setVisible(true);
+  const hideModal = () => setVisible(false);
+  const containerStyle = {backgroundColor: 'white', padding: 20};
+  const [value, setValue] = useState('en');
 
   return (
     <Drawer.Navigator
       drawerContent={(props) => <CustomDrawerContent {...props} />}
+      screenOptions={({ navigation }) => ({
+        headerRight: () =>(
+          <>
+      <Button  onPress={showModal}>
+      🌐
+      </Button>
+          <Portal>
+        <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={containerStyle}>
+        <Title>Change App Language</Title>
+        <View>
+        <RadioButton.Group onValueChange={value => {
+          setValue(value)
+          i18n.changeLanguage(value)
+        }} value={value}>
+      <RadioButton.Item label="Punjabi" value="pa" />
+      <RadioButton.Item label="English" value="en" />
+    </RadioButton.Group>
+    </View>
+        </Modal>
+      </Portal>
+          </>
+          ),
+        headerShown: true,
+
+      })}
     >
       <Drawer.Screen
         name="Sri Guru Granth Sahib Ji"

@@ -22,6 +22,7 @@ import { useMutation } from "react-query";
 import { useAtom } from "jotai";
 import { Feather } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useTranslation } from "react-i18next";
 const { width } = Dimensions.get("window");
 
 const Login = ({ navigation }: any) => {
@@ -67,7 +68,7 @@ const Login = ({ navigation }: any) => {
         await AsyncStorage.setItem("authToken", authToken);
         setIsLoggedIn(true);
         Alert.alert("Success", "Login Successfully");
-        navigation.navigate("BookmarkScreen");
+        navigation.navigate("Sri Guru Granth Sahib Ji");
       } else {
         Alert.alert(
           "Error",
@@ -86,6 +87,7 @@ const Login = ({ navigation }: any) => {
   const handleLogin = () => {
     mutate({ email, password });
   };
+  const { t } = useTranslation();
 
   return isLoggedIn ? (
     <Bookmark />
@@ -101,14 +103,16 @@ const Login = ({ navigation }: any) => {
               textAlign: "center",
             }}
           >
-            ਵਾਹਿਗੁਰੂ ਜੀ ਕਾ ਖਾਲਸਾ।।{"\n"}
-            ਵਾਹਿਗੁਰੂ ਜੀ ਕੀ ਫਤਿਹ।।
+          {
+            t('wjkk')+'\n'+
+            t('wjkf')
+          }
           </Text>
         </View>
         <View>
           <TextInput
             style={styles.txt}
-            placeholder="ਈ - ਮੇਲ"
+            placeholder={t('Email')}
             keyboardType="email-address"
             autoCapitalize="none"
             onChangeText={setEmail}
@@ -118,7 +122,7 @@ const Login = ({ navigation }: any) => {
             <TextInput
               style={styles.txt}
               secureTextEntry={!isPasswordVisible}
-              placeholder="ਪਾਸਵਰਡ"
+              placeholder={t('Password')}
               autoCapitalize="none"
               onChangeText={setPassword}
               placeholderTextColor="grey"
@@ -151,69 +155,7 @@ const Login = ({ navigation }: any) => {
           </Pressable>
         </View>
         <PressReg navigation={navigation} />
-        <View
-          style={{
-            padding: 10,
-            margin: 20,
-            flexDirection: "row",
-            justifyContent: "center",
-          }}
-        >
-          <View
-            style={{
-              borderWidth: 1,
-              width: 90,
-              height: 1,
-              alignSelf: "center",
-              borderColor: "rgb(220,220,220)",
-            }}
-          />
-          <Text style={{ textAlign: "center", color: "rgb(200,200,200)" }}>
-            or sign up with
-          </Text>
-          <View
-            style={{
-              borderWidth: 1,
-              width: 90,
-              height: 1,
-              alignSelf: "center",
-              borderColor: "rgb(220,220,220)",
-            }}
-          />
-        </View>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "center",
-            padding: 10,
-          }}
-        >
-          <TouchableOpacity>
-            <Image
-              style={styles.logo}
-              source={{
-                uri: "https://ww2.freelogovectors.net/wp-content/uploads/2023/03/apple_logo-freelogovectors.net_-1.png",
-              }}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Image
-              style={styles.logo}
-              source={{
-                uri: "https://logowik.com/content/uploads/images/985_google_g_icon.jpg",
-              }}
-            />
-          </TouchableOpacity>
 
-          <TouchableOpacity>
-            <Image
-              style={styles.logo}
-              source={{
-                uri: "https://static.vecteezy.com/system/resources/previews/018/930/702/original/facebook-logo-facebook-icon-transparent-free-png.png",
-              }}
-            />
-          </TouchableOpacity>
-        </View>
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );

@@ -13,13 +13,18 @@ import {
   QueryClientProvider,
 } from "react-query";
 import { Provider as PaperProvider } from "react-native-paper";
+import { useEffect } from "react";
+import i18n from "./i18n";
 
 export const queryClient = new QueryClient();
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
+useEffect(()=>{
+  i18n.changeLanguage('en');
 
+})
   if (!isLoadingComplete) {
     return null;
   } else {
