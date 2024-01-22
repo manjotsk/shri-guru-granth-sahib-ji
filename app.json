@@ -25,7 +25,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/AppIcons/playstore.png",
+        "foregroundImage": "./assets/AppIcons/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.manjotsk.shrigurugranthsahibji"
