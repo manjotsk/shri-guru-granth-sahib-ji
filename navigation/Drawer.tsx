@@ -21,6 +21,7 @@ import { View, Text } from "../components/Themed";
 import { Button, Modal, Portal, RadioButton, Title } from "react-native-paper";
 import { useState } from "react";
 import i18n from "../i18n";
+import { Linking } from "react-native";
 
 function CustomDrawerContent(props) {
   const [isLoggedIn, setisLoggedIn] = useAtom(loginFlag);
@@ -36,7 +37,11 @@ function CustomDrawerContent(props) {
     }
   };
   return (
-    <DrawerContentScrollView {...props}>
+    <DrawerContentScrollView {...props} contentContainerStyle={{
+      flex:1
+    }}>
+      <View style={{ flex: 1}}>
+
       <DrawerItemList {...props} />
       <DrawerItem
         label="Log out"
@@ -46,10 +51,26 @@ function CustomDrawerContent(props) {
         }}
         icon={({ color, size }) => (
           <MaterialCommunityIcons name="logout" color="green" size={size} />
+          )}
+          />
+          </View>
+      <View style={{ flex: 1, flexDirection:'column', justifyContent:'flex-end', paddingBottom:30 }}>
+      <DrawerItem
+        label="Delete my Account"
+        onPress={() => {
+          // logout logic
+          Linking.openURL("https://sikhi-connect.web.app/form/delete-account")
+        }}
+        icon={({ color, size }) => (
+          <MaterialCommunityIcons name="open-in-new" color="green" size={size} />
         )}
       />
-      <View style={{ flex: 1, marginTop: "210%" }}>
-        <Text style={{ color: "grey" }}>Simbaquartz</Text>
+        <Text
+          style={{ color: "blue", textAlign:'center' }}
+          onPress={() => Linking.openURL("https://github.com/SimbaQuartz")}
+        >
+          SimbaQuartz Open Source
+        </Text>
       </View>
     </DrawerContentScrollView>
   );
@@ -62,37 +83,41 @@ export function RouterDrawer() {
 
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
-  const containerStyle = {backgroundColor: 'white', padding: 20};
-  const [value, setValue] = useState('en');
+  const containerStyle = { backgroundColor: "white", padding: 20 };
+  const [value, setValue] = useState("en");
 
   return (
     <Drawer.Navigator
       drawerContent={(props) => <CustomDrawerContent {...props} />}
       screenOptions={({ navigation }) => ({
-        headerRight: () =>(
+        headerRight: () => (
           <>
-      <Button  onPress={showModal}>
-      🌐
-      </Button>
-          <Portal>
-        <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={containerStyle}>
-        <Title>Change App Language</Title>
-        <View>
-        <RadioButton.Group onValueChange={value => {
-          setValue(value)
-          i18n.changeLanguage(value)
-          hideModal()
-        }} value={value}>
-      <RadioButton.Item label="Punjabi" value="pa" />
-      <RadioButton.Item label="English" value="en" />
-    </RadioButton.Group>
-    </View>
-        </Modal>
-      </Portal>
+            <Button onPress={showModal}>🌐</Button>
+            <Portal>
+              <Modal
+                visible={visible}
+                onDismiss={hideModal}
+                contentContainerStyle={containerStyle}
+              >
+                <Title>Change App Language</Title>
+                <View>
+                  <RadioButton.Group
+                    onValueChange={(value) => {
+                      setValue(value);
+                      i18n.changeLanguage(value);
+                      hideModal();
+                    }}
+                    value={value}
+                  >
+                    <RadioButton.Item label="Punjabi" value="pa" />
+                    <RadioButton.Item label="English" value="en" />
+                  </RadioButton.Group>
+                </View>
+              </Modal>
+            </Portal>
           </>
-          ),
+        ),
         headerShown: true,
-
       })}
     >
       <Drawer.Screen
@@ -147,7 +172,6 @@ export function RouterDrawer() {
               ),
             }}
           />
-
         </>
       )}
       {!isLoggedIn && (
@@ -183,10 +207,8 @@ export function RouterDrawer() {
               ),
             }}
           />
-
         </>
       )}
-
     </Drawer.Navigator>
   );
 }

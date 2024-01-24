@@ -2,7 +2,7 @@
   "expo": {
     "name": "Sikhi Connect",
     "slug": "shri-guru-granth-sahib-ji",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/AppIcons/Assets.xcassets/AppIcon.appiconset/1024.png",
     "scheme": "myapp",

@@ -46,7 +46,7 @@ const Registration = ({ navigation }: any) => {
   };
 
   const registrationUser = async () => {
-    if (!fullName || !address || !email || !password) {
+    if (!fullName || !email || !password) {
       Alert.alert("ਕੁਝ ਗਲਤ", "ਕਿਰਪਾ ਕਰਕੇ ਖੇਤਰਾਂ ਨੂੰ ਭਰੋ।");
       return;
     }
@@ -98,15 +98,15 @@ const Registration = ({ navigation }: any) => {
             onChangeText={setFullName}
             placeholderTextColor="grey"
           />
-          <TextInput
+          {/* <TextInput
             style={styles.txt}
             // label="ਪੂਰਾ ਪਤਾ"
             label={t('Full Address')}
             onChangeText={setAddress}
             placeholderTextColor="grey"
-          />
+          /> */}
           
-          <TouchableOpacity onPress={toggleDatePicker} style={styles.txt}>
+          {/* <TouchableOpacity onPress={toggleDatePicker} style={styles.txt}>
             <Text style={{ color: "grey" }}>
               {date ? dayjs(date).format("DD/MM/YYYY") : t('Date of Birth')+" (DD/MM/YYYY)"}
             </Text>
@@ -121,7 +121,7 @@ const Registration = ({ navigation }: any) => {
               }}
               mode="date"
             />
-          )}
+          )} */}
           <TextInput
             style={styles.txt}
             placeholder={t('Email')}
