@@ -47,7 +47,7 @@ const Registration = ({ navigation }: any) => {
 
   const registrationUser = async () => {
     if (!fullName || !email || !password) {
-      Alert.alert("ਕੁਝ ਗਲਤ", "ਕਿਰਪਾ ਕਰਕੇ ਖੇਤਰਾਂ ਨੂੰ ਭਰੋ।");
+      Alert.alert(t("Missing info"), t("Kindly fill out the missing details"));
       return;
     }
     try {

@@ -40,23 +40,7 @@ const UpdateUser = () => {
             onChangeText={setFullName}
             placeholderTextColor="grey"
           />
-          <TextInput
-            style={styles.txt}
-            placeholder="ਪੂਰਾ ਪਤਾ"
-            onChangeText={setAddress}
-            placeholderTextColor="grey"
-          />
-          <PhoneInput
-            value={phone}
-            setValue="10"
-            textStyle={{ color: "grey" }}
-            onChangePhoneNumber={(text) => setPhone(text)}
-            style={styles.txt}
-            initialCountry="in"
-            textProps={{
-              placeholder: "Phone Number",
-            }}
-          />
+
           <TouchableOpacity onPress={toggleDatePicker} style={styles.txt}>
             <Text style={{ color: "grey" }}>
               {date ? dayjs(date).format("DD/MM/YYYY") : "DD/MM/YYYY"}

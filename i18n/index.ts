@@ -18,7 +18,9 @@ const resources = {
         "Full Address": "ਪੂਰਾ ਪਤਾ",
         "Date of Birth": "Date of Birth",
         "Email": "ਈ - ਮੇਲ",
-        Password:"ਪਾਸਵਰਡ"
+        Password:"ਪਾਸਵਰਡ",
+        "Something Went Wrong":"ਕੁਝ ਗਲਤ",
+        "Kindly fill out the missing details":"ਕਿਰਪਾ ਕਰਕੇ ਖੇਤਰਾਂ ਨੂੰ ਭਰੋ।",
 
     },
   },
