@@ -3,7 +3,7 @@ import { Ang } from "../../types";
 import { getAng, getKosh } from "./services";
 
 export const useAng = ({ angId }, options) =>
-  useQuery<any, any, Ang, any>(["ang", angId], async () => getAng({ angId }), {
+  useQuery<any, any, Ang, any>(["angg", angId], async () => getAng({ angId }), {
     ...options,
   });
 

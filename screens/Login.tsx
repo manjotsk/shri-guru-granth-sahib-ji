@@ -53,8 +53,8 @@ const Login = ({ navigation }: any) => {
   const loginUser = async () => {
     if (!email || !password) {
       Alert.alert(
-        "ਕੁਝ ਗਲਤ",
-        "ਕਿਰਪਾ ਕਰਕੇ ਈਮੇਲ ਅਤੇ ਪਾਸਵਰਡ ਦੋਵਾਂ ਖੇਤਰਾਂ ਨੂੰ ਭਰੋ।"
+        t('"Something Went Wrong"'),
+        t("Email/Password missing")
       );
       return;
     }

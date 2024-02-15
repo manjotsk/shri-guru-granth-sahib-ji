@@ -11,7 +11,7 @@ import Registration from "../screens/Registration";
 import TabOneScreen from "../screens/TabOneScreen";
 import LoginButton from "../components/LoginBtn";
 import Bookmark from "../screens/Bookmark";
-import { loginFlag } from "../store/auth";
+import { fontScaleAtom, loginFlag } from "../store/auth";
 import { useAtom } from "jotai";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
@@ -22,6 +22,8 @@ import { Button, Modal, Portal, RadioButton, Title } from "react-native-paper";
 import { useState } from "react";
 import i18n from "../i18n";
 import { Linking } from "react-native";
+import Slider from "@react-native-community/slider";
+import React from "react";
 
 function CustomDrawerContent(props) {
   const [isLoggedIn, setisLoggedIn] = useAtom(loginFlag);
@@ -36,37 +38,77 @@ function CustomDrawerContent(props) {
       console.error("Error during logout:", error);
     }
   };
+  const [fontScale, setFontScale] =useAtom(fontScaleAtom)
   return (
-    <DrawerContentScrollView {...props} contentContainerStyle={{
-      flex:1
-    }}>
-      <View style={{ flex: 1}}>
-
-      <DrawerItemList {...props} />
-      <DrawerItem
-        label="Log out"
-        onPress={() => {
-          // logout logic
-          handleLogout();
-        }}
-        icon={({ color, size }) => (
-          <MaterialCommunityIcons name="logout" color="green" size={size} />
+    <DrawerContentScrollView
+      {...props}
+      contentContainerStyle={{
+        flex: 1,
+      }}
+    >
+      <View style={{ flex: 1 }}>
+        <DrawerItemList {...props} />
+        <DrawerItem
+          label="Log out"
+          onPress={() => {
+            // logout logic
+            handleLogout();
+          }}
+          icon={({ color, size }) => (
+            <MaterialCommunityIcons name="logout" color="green" size={size} />
           )}
-          />
-          </View>
-      <View style={{ flex: 1, flexDirection:'column', justifyContent:'flex-end', paddingBottom:30 }}>
-      <DrawerItem
-        label="Delete my Account"
-        onPress={() => {
-          // logout logic
-          Linking.openURL("https://sikhi-connect.web.app/form/delete-account")
+        />
+      </View>
+      <View style={{alignItems: 'center'}}>
+        <Text>Font size</Text>
+
+        <Slider
+          style={{ width: 200, height: 40 }}
+          minimumValue={1}
+          maximumValue={2}
+          minimumTrackTintColor="#000000"
+          maximumTrackTintColor="#AAAAAA"
+          step={.2}
+          value={+fontScale}
+        onValueChange={async (fontScaleVal)=>{
+          await AsyncStorage.setItem('fontScale', `${fontScaleVal}`)
+          setFontScale(fontScaleVal)
+          
         }}
-        icon={({ color, size }) => (
-          <MaterialCommunityIcons name="open-in-new" color="green" size={size} />
-        )}
-      />
+
+          />
+        <View style={{display:'flex', width:200, flexDirection:'row', justifyContent:'space-between'}}>
+          <Text style={{fontSize:20}}>A</Text>
+          <Text style={{fontSize:40}}>A</Text>
+          <Text style={{fontSize:60}}>A</Text>
+          </View>
+      </View>
+      <View
+        style={{
+          flex: 1,
+          flexDirection: "column",
+          justifyContent: "flex-end",
+          paddingBottom: 30,
+        }}
+      >
+        <DrawerItem
+          label="Delete my Account"
+          onPress={() => {
+            // logout logic
+            Linking.openURL(
+              "https://sikhi-connect.web.app/form/delete-account"
+            );
+          }}
+          icon={({ color, size }) => (
+            <MaterialCommunityIcons
+              name="open-in-new"
+              color="green"
+              size={size}
+            />
+          )}
+        />
         <Text
-          style={{ color: "blue", textAlign:'center' }}
+          style={{ color: "blue", textAlign: "center" }}
           onPress={() => Linking.openURL("https://github.com/SimbaQuartz")}
         >
           SimbaQuartz Open Source

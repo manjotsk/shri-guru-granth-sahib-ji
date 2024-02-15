@@ -21,6 +21,7 @@ const resources = {
         Password:"ਪਾਸਵਰਡ",
         "Something Went Wrong":"ਕੁਝ ਗਲਤ",
         "Kindly fill out the missing details":"ਕਿਰਪਾ ਕਰਕੇ ਖੇਤਰਾਂ ਨੂੰ ਭਰੋ।",
+        "Email/Password missing":"ਕਿਰਪਾ ਕਰਕੇ ਈਮੇਲ ਅਤੇ ਪਾਸਵਰਡ ਦੋਵਾਂ ਖੇਤਰਾਂ ਨੂੰ ਭਰੋ।",
 
     },
   },

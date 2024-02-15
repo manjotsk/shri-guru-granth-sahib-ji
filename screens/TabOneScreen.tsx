@@ -28,7 +28,7 @@ import { useAng, useKosh } from "../data/ang/query";
 import { RootTabScreenProps } from "../types";
 import { useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { loginFlag } from "../store/auth";
+import { fontScaleAtom, loginFlag } from "../store/auth";
 import { useAtom } from "jotai";
 import { useAddBookmark } from "../data/bookmark/mutation";
 import {
@@ -36,6 +36,7 @@ import {
   BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet";
 import { DataTable } from "react-native-paper";
+import React from "react";
 
 function keyExtractor(page: CreatePage) {
   return `${page.key}`;
@@ -43,7 +44,7 @@ function keyExtractor(page: CreatePage) {
 
 function Ang({ page, setAngId }: RootTabScreenProps<"TabOne">) {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-  const snapPoints = useMemo(() => ["25%", "50%"], []);
+  const snapPoints = useMemo(() => ["70%"], []);
   const [words, setWords] = useState([]);
 
   const handlePresentModalPress = useCallback((line) => {
@@ -77,19 +78,18 @@ function Ang({ page, setAngId }: RootTabScreenProps<"TabOne">) {
   const addBookmark = useAddBookmark();
   const kosh = useKosh(words);
 
-  const onDoubleTapEvent = async(event: any, data) => {
+  const onDoubleTapEvent = async (event: any, data) => {
     if (event.nativeEvent.state === State.ACTIVE) {
-      console.log("double tap 1");
       try {
         await addBookmark.mutateAsync(data);
-        Alert.alert("Bookmark Saved")
-        
+        Alert.alert("Bookmark Saved");
       } catch (error) {
-        Alert.alert("Bookmark Already Saved!")
-        
+        Alert.alert("Bookmark Already Saved!");
       }
     }
   };
+  const [isLoggedIn] = useAtom(loginFlag);
+  const [fontScale, setFontScale] = useAtom(fontScaleAtom);
 
   return (
     <View style={{ flex: 1 }}>
@@ -97,7 +97,7 @@ function Ang({ page, setAngId }: RootTabScreenProps<"TabOne">) {
         <BottomSheetModalProvider>
           <BottomSheetModal
             ref={bottomSheetModalRef}
-            index={1}
+            index={0}
             snapPoints={snapPoints}
             onChange={handleSheetChanges}
           >
@@ -114,19 +114,23 @@ function Ang({ page, setAngId }: RootTabScreenProps<"TabOne">) {
                 ) : (
                   kosh?.data?.map(({ _id, word, meaning, otherFaces }) => (
                     <DataTable.Row key={_id}>
-                      <DataTable.Cell>
+                      <DataTable.Cell style={{padding:5}}>
                         <View style={{ display: "flex" }}>
-                          <Text>{word}</Text>
+                          <Text style={{
+                            fontSize:15*fontScale
+                          }}>{word}</Text>
                           {otherFaces?.length ? (
                             <Text style={{ color: "grey", fontSize: 10 }}>
-                              ({otherFaces?.map?.(({ word }) => word)?.join()})
+                              ({otherFaces?.map?.(({ word }) => word)?.join(", ")})
                             </Text>
                           ) : undefined}
                         </View>
                       </DataTable.Cell>
-                      <DataTable.Cell>
+                      <DataTable.Cell style={{padding:5}}>
                         <View style={{ display: "flex" }}>
-                          <Text>{meaning}</Text>
+                        <Text style={{
+                            fontSize:15*fontScale
+                          }}>{meaning}</Text>
                         </View>
                       </DataTable.Cell>
                       {/* <DataTable.Cell numeric>{item.fat}</DataTable.Cell> */}
@@ -172,12 +176,12 @@ function Ang({ page, setAngId }: RootTabScreenProps<"TabOne">) {
         }}
       >
         <Text style={{ textAlign: "right", padding: 5 }}>
-          Ang: {ang.data?.pageno}
+          Ang: {ang.data?.pageNo}
         </Text>
       </Button>
       <FlatList
         style={styles.container}
-        data={ang.data?.page}
+        data={ang.data?.lines}
         decelerationRate="fast"
         showsVerticalScrollIndicator={false}
         renderItem={(page) => (
@@ -185,38 +189,38 @@ function Ang({ page, setAngId }: RootTabScreenProps<"TabOne">) {
             <TapGestureHandler
               ref={doubleTapRef}
               onHandlerStateChange={(e) => {
-                onDoubleTapEvent(e, {
-                  title: page.item.line.gurmukhi.unicode,
-                  engAkhar: page.item.line.gurmukhi.akhar,
-                  arth: page.item.line.translation.punjabi.default.unicode,
-                  ang: page.item.line.pageno,
-                  lineno: page.item.line.lineno,
-                  hindi: page.item.line.transliteration.devanagari.text,
-                  english: page.item.line.translation.english.default,
-                });
+                if (!true)
+                  onDoubleTapEvent(e, {
+                    title: page.item.verse,
+                    arth: page.item.translationSahibSingh,
+                    ang: page.item.verse.pageNo,
+                    lineno: page.item.verse.lineno,
+                    // hindi: page.item.line.transliteration.devanagari.text,
+                    // english: page.item.line.translation.english.default,
+                  });
               }}
               numberOfTaps={2}
             >
               <Pressable>
                 <TouchableOpacity
                   onLongPress={() => {
-                    handlePresentModalPress(page.item.line.gurmukhi.unicode);
+                    handlePresentModalPress(page.item.verse);
                   }}
                 >
                   <Text
                     style={{
-                      fontSize: 30,
+                      fontSize: 30 * fontScale,
                       fontWeight: "600",
                       textAlign: "center",
                     }}
                   >
-                    {page.item.line.gurmukhi.unicode}
+                    {page.item.verse}
                   </Text>
                 </TouchableOpacity>
               </Pressable>
             </TapGestureHandler>
-            <Text style={{ fontSize: 20 }}>
-              {page.item.line.translation.punjabi.default.unicode}
+            <Text style={{ fontSize: 20 * fontScale, textAlign: "center" }}>
+              {page.item.translationSahibSingh}
             </Text>
           </View>
         )}
