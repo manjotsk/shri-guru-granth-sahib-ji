@@ -73,8 +73,6 @@ const callAxios = async ({
   body,
   apiHostUrl,
 }: any) => {
-  console.log(makeUrl({ ...uriEndPoint, pathParams, query }, apiHostUrl));
-
   return Axios({
     method: uriEndPoint.method,
     url: makeUrl({ ...uriEndPoint, pathParams, query }, apiHostUrl),

@@ -49,14 +49,14 @@ const GetProfile = ({ navigation }: any) => {
         <Text style={styles.txt}>{data.phone}</Text>
         <Text style={styles.txt}>{data.address}</Text>
         <Text style={styles.txt}>{data.dob}</Text>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={styles.btn}
           onPress={() => navigation.navigate("UpdateUser")}
         >
           <Text style={[styles.txt, { color: "rgb(255,255,255)" }]}>
             Update Profile
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </View>
   );

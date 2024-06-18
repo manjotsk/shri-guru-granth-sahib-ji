@@ -1,11 +1,18 @@
-import { useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import {
   ScrollView,
   StyleSheet,
   Pressable,
   TouchableOpacity,
+  Alert,
 } from "react-native";
-import { Button, Dialog, Portal, TextInput } from "react-native-paper";
+import {
+  ActivityIndicator,
+  Button,
+  Dialog,
+  Portal,
+  TextInput,
+} from "react-native-paper";
 import InfinitePager, {
   InfinitePagerImperativeApi,
 } from "react-native-infinite-pager";
@@ -17,19 +24,37 @@ import {
 } from "react-native-gesture-handler";
 import EditScreenInfo from "../components/EditScreenInfo";
 import { Text, View } from "../components/Themed";
-import { useAng } from "../data/ang/query";
+import { useAng, useKosh } from "../data/ang/query";
 import { RootTabScreenProps } from "../types";
 import { useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { loginFlag } from "../store/auth";
+import { fontScaleAtom, loginFlag } from "../store/auth";
 import { useAtom } from "jotai";
 import { useAddBookmark } from "../data/bookmark/mutation";
+import {
+  BottomSheetModal,
+  BottomSheetModalProvider,
+} from "@gorhom/bottom-sheet";
+import { DataTable } from "react-native-paper";
+import React from "react";
 
 function keyExtractor(page: CreatePage) {
   return `${page.key}`;
 }
 
 function Ang({ page, setAngId }: RootTabScreenProps<"TabOne">) {
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+  const snapPoints = useMemo(() => ["70%"], []);
+  const [words, setWords] = useState([]);
+
+  const handlePresentModalPress = useCallback((line) => {
+    setWords(line?.split(" "));
+    bottomSheetModalRef.current?.present();
+  }, []);
+  const handleSheetChanges = useCallback((index: number) => {
+    console.log("handleSheetChanges", index);
+  }, []);
+
   const [, setIsLoggedIn] = useAtom(loginFlag);
   useEffect(() => {
     AsyncStorage.getItem("authToken").then((a) => {
@@ -51,17 +76,72 @@ function Ang({ page, setAngId }: RootTabScreenProps<"TabOne">) {
   const [angValue, setAngValue] = useState(page);
   const doubleTapRef = useRef(null);
   const addBookmark = useAddBookmark();
+  const kosh = useKosh(words);
 
-  const onDoubleTapEvent = (event: any, data) => {
+  const onDoubleTapEvent = async (event: any, data) => {
     if (event.nativeEvent.state === State.ACTIVE) {
-      console.log("double tap 1");
-      addBookmark.mutateAsync(data);
+      try {
+        await addBookmark.mutateAsync(data);
+        Alert.alert("Bookmark Saved");
+      } catch (error) {
+        Alert.alert("Bookmark Already Saved!");
+      }
     }
   };
+  const [isLoggedIn] = useAtom(loginFlag);
+  const [fontScale, setFontScale] = useAtom(fontScaleAtom);
 
   return (
     <View style={{ flex: 1 }}>
       <Portal>
+        <BottomSheetModalProvider>
+          <BottomSheetModal
+            ref={bottomSheetModalRef}
+            index={0}
+            snapPoints={snapPoints}
+            onChange={handleSheetChanges}
+          >
+            <ScrollView>
+              <DataTable>
+                <DataTable.Header>
+                  <DataTable.Title>Word</DataTable.Title>
+                  <DataTable.Title numeric>Meaning</DataTable.Title>
+                  {/* <DataTable.Title numeric>Fat</DataTable.Title> */}
+                </DataTable.Header>
+
+                {kosh.isFetching ? (
+                  <ActivityIndicator />
+                ) : (
+                  kosh?.data?.map(({ _id, word, meaning, otherFaces }) => (
+                    <DataTable.Row key={_id}>
+                      <DataTable.Cell style={{padding:5}}>
+                        <View style={{ display: "flex" }}>
+                          <Text style={{
+                            fontSize:15*fontScale
+                          }}>{word}</Text>
+                          {otherFaces?.length ? (
+                            <Text style={{ color: "grey", fontSize: 10 }}>
+                              ({otherFaces?.map?.(({ word }) => word)?.join(", ")})
+                            </Text>
+                          ) : undefined}
+                        </View>
+                      </DataTable.Cell>
+                      <DataTable.Cell style={{padding:5}}>
+                        <View style={{ display: "flex" }}>
+                        <Text style={{
+                            fontSize:15*fontScale
+                          }}>{meaning}</Text>
+                        </View>
+                      </DataTable.Cell>
+                      {/* <DataTable.Cell numeric>{item.fat}</DataTable.Cell> */}
+                    </DataTable.Row>
+                  ))
+                )}
+              </DataTable>
+            </ScrollView>
+            {/* </View> */}
+          </BottomSheetModal>
+        </BottomSheetModalProvider>
         <Dialog visible={visible}>
           <TextInput
             label="Ang ID"
@@ -96,12 +176,12 @@ function Ang({ page, setAngId }: RootTabScreenProps<"TabOne">) {
         }}
       >
         <Text style={{ textAlign: "right", padding: 5 }}>
-          Ang: {ang.data?.pageno}
+          Ang: {ang.data?.pageNo}
         </Text>
       </Button>
       <FlatList
         style={styles.container}
-        data={ang.data?.page}
+        data={ang.data?.lines}
         decelerationRate="fast"
         showsVerticalScrollIndicator={false}
         renderItem={(page) => (
@@ -109,34 +189,38 @@ function Ang({ page, setAngId }: RootTabScreenProps<"TabOne">) {
             <TapGestureHandler
               ref={doubleTapRef}
               onHandlerStateChange={(e) => {
-                onDoubleTapEvent(e, {
-                  title: page.item.line.gurmukhi.unicode,
-                  engAkhar: page.item.line.gurmukhi.akhar,
-                  arth: page.item.line.translation.punjabi.default.unicode,
-                  ang: page.item.line.pageno,
-                  lineno: page.item.line.lineno,
-                  hindi: page.item.line.transliteration.devanagari.text,
-                  english: page.item.line.translation.english.default,
-                });
+                if (!true)
+                  onDoubleTapEvent(e, {
+                    title: page.item.verse,
+                    arth: page.item.translationSahibSingh,
+                    ang: page.item.verse.pageNo,
+                    lineno: page.item.verse.lineno,
+                    // hindi: page.item.line.transliteration.devanagari.text,
+                    // english: page.item.line.translation.english.default,
+                  });
               }}
               numberOfTaps={2}
             >
               <Pressable>
-                <TouchableOpacity>
+                <TouchableOpacity
+                  onLongPress={() => {
+                    handlePresentModalPress(page.item.verse);
+                  }}
+                >
                   <Text
                     style={{
-                      fontSize: 30,
+                      fontSize: 30 * fontScale,
                       fontWeight: "600",
                       textAlign: "center",
                     }}
                   >
-                    {page.item.line.gurmukhi.unicode}
+                    {page.item.verse}
                   </Text>
                 </TouchableOpacity>
               </Pressable>
             </TapGestureHandler>
-            <Text style={{ fontSize: 20 }}>
-              {page.item.line.translation.punjabi.default.unicode}
+            <Text style={{ fontSize: 20 * fontScale, textAlign: "center" }}>
+              {page.item.translationSahibSingh}
             </Text>
           </View>
         )}
@@ -176,8 +260,7 @@ export default function TabOneScreen() {
       setDisplayPortal(false);
     }, 4000);
     setTimeout(async () => {
-      let lastang = await AsyncStorage.getItem("lastAng");
-
+      let lastang = (await AsyncStorage.getItem("lastAng")) || 1;
       infinitePager.current?.setPage(+lastang, {
         animated: false,
       });
@@ -277,6 +360,17 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     marginBottom: 20,
   },
+  container1: {
+    flex: 1,
+    padding: 24,
+    justifyContent: "center",
+    backgroundColor: "grey",
+  },
+  contentContainer: {
+    flex: 1,
+    alignItems: "center",
+  },
+
   title: {
     fontSize: 20,
     fontWeight: "bold",

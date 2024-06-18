@@ -6,7 +6,7 @@ import {
   StatusBar,
   TouchableWithoutFeedback,
   TouchableOpacity,
-  TextInput,
+  Dimensions,
 } from "react-native";
 import { Text, View } from "../components/Themed";
 import axios from "axios";
@@ -22,10 +22,13 @@ import DatePicker from "react-native-ui-datepicker";
 import { Feather } from "@expo/vector-icons";
 
 import React from "react";
-import Theme from "../theme/Theme";
-import Layout from "../constants/Layout";
+import { TextInput } from "react-native-paper";
+
+const { height, width } = Dimensions.get("window");
+import { useTranslation } from 'react-i18next';
 
 const Registration = ({ navigation }: any) => {
+  const { t } = useTranslation();
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
@@ -43,8 +46,8 @@ const Registration = ({ navigation }: any) => {
   };
 
   const registrationUser = async () => {
-    if (!fullName || !address || !email || !password) {
-      Alert.alert("ਕੁਝ ਗਲਤ", "ਕਿਰਪਾ ਕਰਕੇ ਖੇਤਰਾਂ ਨੂੰ ਭਰੋ।");
+    if (!fullName || !email || !password) {
+      Alert.alert(t("Missing info"), t("Kindly fill out the missing details"));
       return;
     }
     try {
@@ -72,11 +75,7 @@ const Registration = ({ navigation }: any) => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView
-        style={{
-          alignItems: "center",
-          backgroundColor: Theme.color.White,
-          flex: 1,
-        }}
+        style={{ alignItems: "center", backgroundColor: "white", flex: 1 }}
       >
         <StatusBar backgroundColor="#000" />
         <Text
@@ -85,36 +84,31 @@ const Registration = ({ navigation }: any) => {
             textAlign: "center",
           }}
         >
-          ਵਾਹਿਗੁਰੂ ਜੀ ਕਾ ਖਾਲਸਾ।।{"\n"}
-          ਵਾਹਿਗੁਰੂ ਜੀ ਕੀ ਫਤਿਹ।।
+          {
+            t('wjkk')+'\n'+
+            t('wjkf')
+          }
+          
         </Text>
         <View>
           <TextInput
+          mode="flat"
             style={styles.txt}
-            placeholder="ਪੂਰਾ ਨਾਮ"
-            onChangeText={(text) => setFullName(text)}
-            placeholderTextColor={Theme.color.Grey}
+            label={t('Full Name')}
+            onChangeText={setFullName}
+            placeholderTextColor="grey"
           />
-          <TextInput
+          {/* <TextInput
             style={styles.txt}
-            placeholder="ਪੂਰਾ ਪਤਾ"
-            onChangeText={(text) => setAddress(text)}
-            placeholderTextColor={Theme.color.Grey}
-          />
-          <PhoneInput
-            value={phone}
-            setValue="10"
-            textStyle={{ color: Theme.color.Grey }}
-            onChangePhoneNumber={(text) => setPhone(text)}
-            style={styles.txt}
-            initialCountry="in"
-            textProps={{
-              placeholder: "Phone Number",
-            }}
-          />
-          <TouchableOpacity onPress={toggleDatePicker} style={styles.txt}>
-            <Text style={{ color: Theme.color.Grey }}>
-              {date ? dayjs(date).format("DD/MM/YYYY") : "DD/MM/YYYY"}
+            // label="ਪੂਰਾ ਪਤਾ"
+            label={t('Full Address')}
+            onChangeText={setAddress}
+            placeholderTextColor="grey"
+          /> */}
+          
+          {/* <TouchableOpacity onPress={toggleDatePicker} style={styles.txt}>
+            <Text style={{ color: "grey" }}>
+              {date ? dayjs(date).format("DD/MM/YYYY") : t('Date of Birth')+" (DD/MM/YYYY)"}
             </Text>
           </TouchableOpacity>
           {showDatePicker && (
@@ -127,10 +121,10 @@ const Registration = ({ navigation }: any) => {
               }}
               mode="date"
             />
-          )}
+          )} */}
           <TextInput
             style={styles.txt}
-            placeholder=" ਈ - ਮੇਲ "
+            placeholder={t('Email')}
             keyboardType="email-address"
             autoCapitalize="none"
             onChangeText={(text) => setEmail(text)}
@@ -140,14 +134,14 @@ const Registration = ({ navigation }: any) => {
             <TextInput
               style={styles.txt}
               secureTextEntry={!isPasswordVisible}
-              placeholder="ਪਾਸਵਰਡ"
+              placeholder={t('Password')}
               autoCapitalize="none"
               onChangeText={setPassword}
               placeholderTextColor="grey"
             />
             <TouchableOpacity onPress={togglePasswordVisibility}>
               <Feather
-                style={{ paddingTop: 15, right: 30, color: Theme.color.Grey }}
+                style={{ paddingTop: 15, right: 30, color: "grey" }}
                 name={isPasswordVisible ? "eye-off" : "eye"}
                 size={30}
                 color="rgb(30,30,30)"
@@ -158,65 +152,6 @@ const Registration = ({ navigation }: any) => {
         <RegBtn handleregistration={handleregistration} isLoading={isLoading} />
         <PressBtn navigation={navigation} />
 
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            alignContent: "space-between",
-            margin: 20,
-          }}
-        >
-          <View
-            style={{
-              borderWidth: 1,
-              borderColor: "rgb(200,200,200)",
-              height: 1,
-              width: 80,
-            }}
-          />
-          <Text style={{ color: "rgb(200,200,200)" }}>or Sign Up</Text>
-          <View
-            style={{
-              borderWidth: 1,
-              height: 1,
-              width: 80,
-              borderColor: "rgb(200,200,200)",
-            }}
-          />
-        </View>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "center",
-            padding: 10,
-          }}
-        >
-          <TouchableOpacity>
-            <Image
-              style={styles.logo}
-              source={{
-                uri: "https://ww2.freelogovectors.net/wp-content/uploads/2023/03/apple_logo-freelogovectors.net_-1.png",
-              }}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Image
-              style={styles.logo}
-              source={{
-                uri: "https://logowik.com/content/uploads/images/985_google_g_icon.jpg",
-              }}
-            />
-          </TouchableOpacity>
-
-          <TouchableOpacity>
-            <Image
-              style={styles.logo}
-              source={{
-                uri: "https://static.vecteezy.com/system/resources/previews/018/930/702/original/facebook-logo-facebook-icon-transparent-free-png.png",
-              }}
-            />
-          </TouchableOpacity>
-        </View>
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );
@@ -226,17 +161,17 @@ const styles = StyleSheet.create({
   logo: {
     height: 60,
     width: 60,
-    backgroundColor: Theme.color.White,
+    backgroundColor: "white",
     borderWidth: 1,
     borderRadius: 60,
     margin: 10,
   },
   txt: {
-    width: Layout.window.width * 0.8,
-    color: Theme.color.Grey,
+    width: width * 0.8,
+    color: "grey",
     padding: 7,
     marginTop: 4 * 5,
     borderBottomWidth: 1,
-    borderBottomColor: Theme.color.Grey,
+    borderBottomColor: "grey",
   },
 });

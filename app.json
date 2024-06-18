@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "Shri Guru Granth Sahib Ji",
+    "name": "Sikhi Connect",
     "slug": "shri-guru-granth-sahib-ji",
-    "version": "1.0.0",
+    "version": "1.0.2",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/AppIcons/Assets.xcassets/AppIcon.appiconset/1024.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
@@ -20,16 +20,24 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.manjotsk.shrigurugranthsahibji"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/AppIcons/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.manjotsk.shrigurugranthsahibji",
+      "versionCode": 2
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "bf05bb90-5415-4814-a0c3-e31093cb7f31"
+      }
     },
     "runtimeVersion": {
       "policy": "sdkVersion"
