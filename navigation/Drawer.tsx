@@ -18,7 +18,7 @@ import { useNavigation } from "@react-navigation/native";
 import Profile from "../screens/Profile";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { View, Text } from "../components/Themed";
-import { Button, Modal, Portal, RadioButton, Title } from "react-native-paper";
+import { Button, Modal, Portal, RadioButton, Text as PaperText } from "react-native-paper";
 import { useState } from "react";
 import i18n from "../i18n";
 import { Linking } from "react-native";
@@ -141,7 +141,7 @@ export function RouterDrawer() {
                 onDismiss={hideModal}
                 contentContainerStyle={containerStyle}
               >
-                <Title>Change App Language</Title>
+                <PaperText variant="titleLarge">Change App Language</PaperText>
                 <View>
                   <RadioButton.Group
                     onValueChange={(value) => {

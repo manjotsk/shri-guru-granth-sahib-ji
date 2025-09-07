@@ -4,10 +4,16 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import Axios from "axios";
-import queryString from "querystring";
 import { Alert } from "react-native";
 // import { log } from "react-native-reanimated"; // Commented out as it's not exported
 //  import { refresh } from "../services/user";
+
+// Simple querystring stringify implementation for React Native
+const stringifyQuery = (query: Record<string, any>): string => {
+  return Object.entries(query)
+    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+    .join('&');
+};
 
 export const hostname = () => {
   let hostUrl = "https://api.gurbaninow.com";
@@ -24,7 +30,7 @@ export const makeUrl = (
     .map((param: any) =>
       param.charAt(0) === ":" ? encodeURI(pathParams[param.slice(1)]) : param
     )
-    .join("/")}${query ? `?${queryString.stringify(query)}` : ""}`;
+    .join("/")}${query ? `?${stringifyQuery(query)}` : ""}`;
 
 export const getDefaultHeaders = async () => ({
   Authorization: `Bearer ${await AsyncStorage.getItem("authToken")}`,
@@ -50,20 +56,20 @@ export const hasErrors = (apiResponse: any) => {
  *
  * @since 1.0.0
  *
- * @todo all the incoming values for the APIParamaters.pathParams and APIParamaters.query
+ * @todo all the incoming values for the APIParameters.pathParams and APIParameters.query
  * should be uri encoded.
  * @alias callAxios
  * @memberof apiUtils
- * @param {Object} APIParamaters - Set of objects required to make the api call.
- * @param {Object} APIParamaters.uriEndPoint - Endpoint object as described in apiEndPoints.js.
- * @param {String} APIParamaters.uriEndPoint.api - Path to your endpoint
- * @param {String} APIParamaters.uriEndPoint.method - POST/GET/PUT/DELETE etc.
- * @param {String} APIParamaters.uriEndPoint.version - Versioning of your api
- * @param {Object} APIParamaters.uriEndPoint.headerProps - Object of headers you want to pass.
- * @param {Object} APIParamaters.pathParams - Path parameters. Example :id in the path,
+ * @param {Object} APIParameters - Set of objects required to make the api call.
+ * @param {Object} APIParameters.uriEndPoint - Endpoint object as described in apiEndPoints.js.
+ * @param {String} APIParameters.uriEndPoint.api - Path to your endpoint
+ * @param {String} APIParameters.uriEndPoint.method - POST/GET/PUT/DELETE etc.
+ * @param {String} APIParameters.uriEndPoint.version - Versioning of your api
+ * @param {Object} APIParameters.uriEndPoint.headerProps - Object of headers you want to pass.
+ * @param {Object} APIParameters.pathParams - Path parameters. Example :id in the path,
  * then pathParams object will be {id:value}.
- * @param {Object} APIParamaters.query - GET/POST/PUT/DELETE Endpoint.
- * @param {Object} APIParamaters.body - Body of the request.
+ * @param {Object} APIParameters.query - GET/POST/PUT/DELETE Endpoint.
+ * @param {Object} APIParameters.body - Body of the request.
  * @returns {Promise<object>} Body Data from the server.
  */
 const callAxios = async ({
@@ -96,20 +102,20 @@ const callAxios = async ({
  *
  * @since 2.0.0
  *
- * @todo all the incoming values for the APIParamaters.pathParams and APIParamaters.query
+ * @todo all the incoming values for the APIParameters.pathParams and APIParameters.query
  * should be uri encoded.
  * @alias callApi
  * @memberof apiUtils
- * @param {Object} APIParamaters - Set of objects required to make the api call.
- * @param {Object} APIParamaters.uriEndPoint - Endpoint object as described in apiEndPoints.js.
- * @param {String} APIParamaters.uriEndPoint.api - Path to your endpoint
- * @param {String} APIParamaters.uriEndPoint.method - POST/GET/PUT/DELETE etc.
- * @param {String} APIParamaters.uriEndPoint.version - Versioning of your api
- * @param {Object} APIParamaters.uriEndPoint.headerProps - Object of headers you want to pass.
- * @param {Object} APIParamaters.pathParams - Path parameters. Example :id in the path,
+ * @param {Object} APIParameters - Set of objects required to make the api call.
+ * @param {Object} APIParameters.uriEndPoint - Endpoint object as described in apiEndPoints.js.
+ * @param {String} APIParameters.uriEndPoint.api - Path to your endpoint
+ * @param {String} APIParameters.uriEndPoint.method - POST/GET/PUT/DELETE etc.
+ * @param {String} APIParameters.uriEndPoint.version - Versioning of your api
+ * @param {Object} APIParameters.uriEndPoint.headerProps - Object of headers you want to pass.
+ * @param {Object} APIParameters.pathParams - Path parameters. Example :id in the path,
  * then pathParams object will be {id:value}.
- * @param {Object} APIParamaters.query - GET/POST/PUT/DELETE Endpoint.
- * @param {Object} APIParamaters.body - Body of the request.
+ * @param {Object} APIParameters.query - GET/POST/PUT/DELETE Endpoint.
+ * @param {Object} APIParameters.body - Body of the request.
  * @returns {Promise<object>} Body Data from the server.
  */
 
