@@ -22,6 +22,14 @@
         ],
         "listUnknownPackages": false
       }
+    },
+    "install": {
+      "exclude": [
+        "react",
+        "react-dom",
+        "@types/react",
+        "typescript"
+      ]
     }
   },
   "dependencies": {
