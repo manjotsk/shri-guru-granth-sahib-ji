@@ -18,7 +18,7 @@ import SERVER from "../config/connection";
 import IsLoginBtn from "../components/IsLoginBtn";
 import PressReg from "../components/PressReg";
 import { loginFlag } from "../store/auth";
-import { useMutation } from "react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useAtom } from "jotai";
 import { Feather } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -50,8 +50,11 @@ const Login = ({ navigation }: any) => {
     }
   };
 
-  const loginUser = async () => {
-    if (!email || !password) {
+  const loginUser = async (credentials?: { email: string; password: string }) => {
+    const emailToUse = credentials?.email || email;
+    const passwordToUse = credentials?.password || password;
+    
+    if (!emailToUse || !passwordToUse) {
       Alert.alert(
         t('"Something Went Wrong"'),
         t("Email/Password missing")
@@ -60,8 +63,8 @@ const Login = ({ navigation }: any) => {
     }
     try {
       const res = await axios.post(`${SERVER}login`, {
-        email: email,
-        password: password,
+        email: emailToUse,
+        password: passwordToUse,
       });
       if (res.data.token) {
         const authToken = res.data.token;
@@ -83,7 +86,9 @@ const Login = ({ navigation }: any) => {
     }
   };
 
-  const { mutate, isLoading } = useMutation(loginUser);
+  const { mutate, isPending: isLoading } = useMutation({
+    mutationFn: loginUser,
+  });
   const handleLogin = () => {
     mutate({ email, password });
   };

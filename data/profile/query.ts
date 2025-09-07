@@ -1,6 +1,9 @@
-import { useQuery } from "react-query";
-import { Ang } from "../../types";
+import { useQuery } from "@tanstack/react-query";
+import { Ang } from "../../types-data";
 import { getProfile } from "./services";
 
 export const useProfile = () =>
-  useQuery<any, any, Ang, any>(["profile"], async () => getProfile());
+  useQuery<any, any>({
+    queryKey: ["profile"],
+    queryFn: async () => getProfile(),
+  });

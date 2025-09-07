@@ -4,10 +4,10 @@ import {
   StyleSheet,
   TouchableOpacity,
   TouchableWithoutFeedback,
+  TextInput,
 } from "react-native";
 import React, { useState } from "react";
 import { View, Text } from "../components/Themed";
-import { TextInput } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 
 const { height, width } = Dimensions.get("window");

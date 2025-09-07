@@ -15,7 +15,7 @@ export const getBookmark = () => {
   });
 };
 
-export const addBookmark = (body) => {
+export const addBookmark = (body: any) => {
   return callApi({
     uriEndPoint: {
       uri: "bookmark",
@@ -29,7 +29,7 @@ export const addBookmark = (body) => {
   });
 };
 
-export const deleteBookmark = (bookmarkId) => {
+export const deleteBookmark = (bookmarkId: string) => {
   return callApi({
     uriEndPoint: {
       uri: "bookmark/:bookmarkId",

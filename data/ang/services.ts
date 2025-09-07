@@ -3,7 +3,7 @@ import { callApi } from "../../apiUtils";
 import SERVER from "../../config/connection";
 
 // call api to fetch ang
-export const getAng = async ({ angId }) => {
+export const getAng = async ({ angId }: { angId: number }) => {
   const ang = await AsyncStorageLib.getItem("ang1:" + angId);
   if (ang) {
     return JSON.parse(ang);
@@ -25,7 +25,7 @@ export const getAng = async ({ angId }) => {
   return res;
 };
 
-export const getKosh = async (words) => {
+export const getKosh = async (words: string) => {
   const res = await callApi({
     uriEndPoint: {
       uri: "guru-kosh",

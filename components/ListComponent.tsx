@@ -32,8 +32,8 @@ const TRANSLATE_X_THRESHOLD = 20;
 const ListComponent = ({ data }: any) => {
   const deleteBookmark = useDeleteBookmark();
 
-  const handleDelete = async (id) => deleteBookmark.mutateAsync(id);
-  if (deleteBookmark.isLoading)
+  const handleDelete = async (id: string) => deleteBookmark.mutateAsync(id);
+  if (deleteBookmark.isPending)
     return <ActivityIndicator animating size={"large"} />;
   const nativeGesture = Gesture.Native().shouldActivateOnStart(true);
 
@@ -58,10 +58,10 @@ const ListItem = ({ item, onDelete }: any) => {
 
   const panGesture = useAnimatedGestureHandler<PanGestureHandlerGestureEvent>({
     onStart: (_, ctx) => {
-      ctx.startX = translateX.value;
+      (ctx as { startX: number }).startX = translateX.value;
     },
     onActive: (event, ctx) => {
-      translateX.value = ctx.startX + event.translationX;
+      translateX.value = (ctx as { startX: number }).startX + event.translationX;
     },
     onEnd: () => {
       if (translateX.value < -TRANSLATE_X_THRESHOLD) {

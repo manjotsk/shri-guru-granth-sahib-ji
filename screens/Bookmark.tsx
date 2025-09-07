@@ -24,17 +24,17 @@ const Bookmark = () => {
       bookmarks.refetch();
     }, [])
   );
-  if (bookmarks.isLoading) {
+  if (bookmarks.isPending) {
     return <ActivityIndicator animating size={"large"} />;
   }
   const data = bookmarks?.data?.data;
-  const handleSearch = (text) => {
+  const handleSearch = (text: string) => {
     setSearchQuery(text);
   };
 
   // Filter data based on the search query
   const filteredData = data
-    ? data.filter((item) => item.engAkhar.toLowerCase().includes(searchQuery))
+    ? data.filter((item: any) => item.engAkhar.toLowerCase().includes(searchQuery))
     : [];
 
   return (

@@ -6,7 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 import Axios from "axios";
 import queryString from "querystring";
 import { Alert } from "react-native";
-import { log } from "react-native-reanimated";
+// import { log } from "react-native-reanimated"; // Commented out as it's not exported
 //  import { refresh } from "../services/user";
 
 export const hostname = () => {

@@ -1,3 +1,4 @@
+import React, { useRef, useState } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -8,16 +9,15 @@ import {
   Keyboard,
   TouchableOpacity,
 } from "react-native";
-import React, { useRef, useState } from "react";
 import { EvilIcons } from "@expo/vector-icons";
 import { View, Text } from "../components/Themed";
 const { height, width } = Dimensions.get("screen");
 
 const Forgetpassword = ({ navigation }: any) => {
-  const inputRefs = [useRef(null), useRef(null), useRef(null), useRef()];
+  const inputRefs = [useRef<any>(null), useRef<any>(null), useRef<any>(null), useRef<any>(null)];
   const [inputs, setInputs] = useState(["", "", "", ""]);
 
-  const handleInputChange = (text, index) => {
+  const handleInputChange = (text: string, index: number) => {
     const updatedInputs = [...inputs];
     updatedInputs[index] = text;
     setInputs(updatedInputs);

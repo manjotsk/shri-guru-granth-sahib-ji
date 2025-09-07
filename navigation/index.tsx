@@ -103,7 +103,8 @@ const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 function BottomTabNavigator() {
   const colorScheme = useColorScheme();
-  const { angId } = React.useContext(UserContext);
+  const context = React.useContext(UserContext);
+  const { angId } = context || { angId: 1 };
 
   return (
     <BottomTab.Navigator

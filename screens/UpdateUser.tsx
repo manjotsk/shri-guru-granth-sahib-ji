@@ -8,7 +8,6 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import dayjs from "dayjs";
-import PhoneInput from "react-native-phone-input";
 import React, { useState } from "react";
 import DatePicker from "react-native-ui-datepicker";
 import { View, Text } from "../components/Themed";

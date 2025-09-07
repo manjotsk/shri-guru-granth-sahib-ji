@@ -179,6 +179,7 @@ const styles = StyleSheet.create({
 
 export interface NavigationPanelProps {
   disablePagesAmountManagement?: boolean;
+  logs?: boolean;
 }
 
 export type LogsPanelProps = Pick<NavigationPanelProps, "logs">;

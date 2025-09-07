@@ -13,7 +13,7 @@ import { View, Text } from "../components/Themed";
 
 const { height, width } = Dimensions.get("window");
 const borderRadius = Platform.OS === "ios" ? 40 : 0;
-const GetProfile = ({ navigation }) => {
+const GetProfile = ({ navigation }: { navigation: any }) => {
   const profile = useProfile();
   useFocusEffect(
     useCallback(() => {
@@ -23,7 +23,7 @@ const GetProfile = ({ navigation }) => {
 
   const data = profile?.data?.data;
 
-  if (profile.isLoading) {
+  if (profile.isPending) {
     return <ActivityIndicator animating size={"large"} />;
   }
 

@@ -15,17 +15,17 @@ import SERVER from "../config/connection";
 import RegBtn from "../components/RegBtn";
 import dayjs from "dayjs";
 import PressBtn from "../components/PressBtn";
-import { useMutation } from "react-query";
+import { useMutation } from "@tanstack/react-query";
 import { SafeAreaView } from "react-native-safe-area-context";
-import PhoneInput from "react-native-phone-input";
+import MaskInput from "react-native-mask-input";
 import DatePicker from "react-native-ui-datepicker";
 import { Feather } from "@expo/vector-icons";
 
 import React from "react";
-import { TextInput } from "react-native-paper";
+import { TextInput } from "react-native";
+import { useTranslation } from "react-i18next";
 
 const { height, width } = Dimensions.get("window");
-import { useTranslation } from 'react-i18next';
 
 const Registration = ({ navigation }: any) => {
   const { t } = useTranslation();
@@ -45,18 +45,24 @@ const Registration = ({ navigation }: any) => {
     setPasswordVisible(!isPasswordVisible);
   };
 
-  const registrationUser = async () => {
-    if (!fullName || !email || !password) {
+  const registrationUser = async (userData?: { fullName: string; address: string; phone: string; email: string; password: string; }) => {
+    const fullNameToUse = userData?.fullName || fullName;
+    const addressToUse = userData?.address || address;
+    const phoneToUse = userData?.phone || phone;
+    const emailToUse = userData?.email || email;
+    const passwordToUse = userData?.password || password;
+
+    if (!fullNameToUse || !emailToUse || !passwordToUse) {
       Alert.alert(t("Missing info"), t("Kindly fill out the missing details"));
       return;
     }
     try {
       const res = await axios.post(SERVER + "registration", {
-        fullName: fullName,
-        address: address,
-        phone: phone,
-        email: email,
-        password: password,
+        fullName: fullNameToUse,
+        address: addressToUse,
+        phone: phoneToUse,
+        email: emailToUse,
+        password: passwordToUse,
       });
       Alert.alert("Success", "User saved successfully!");
       navigation.navigate("Loginscreen");
@@ -64,7 +70,9 @@ const Registration = ({ navigation }: any) => {
       Alert.alert("Error", "User already registered");
     }
   };
-  const { mutate, isLoading } = useMutation(registrationUser);
+  const { mutate, isPending: isLoading } = useMutation({
+    mutationFn: registrationUser,
+  });
   const handleregistration = () => {
     mutate({ fullName, address, phone, email, password });
   };
@@ -92,11 +100,11 @@ const Registration = ({ navigation }: any) => {
         </Text>
         <View>
           <TextInput
-          mode="flat"
             style={styles.txt}
-            label={t('Full Name')}
+            placeholder={t('Full Name')}
             onChangeText={setFullName}
             placeholderTextColor="grey"
+            value={fullName}
           />
           {/* <TextInput
             style={styles.txt}
@@ -127,8 +135,9 @@ const Registration = ({ navigation }: any) => {
             placeholder={t('Email')}
             keyboardType="email-address"
             autoCapitalize="none"
-            onChangeText={(text) => setEmail(text)}
+            onChangeText={(text: string) => setEmail(text)}
             placeholderTextColor="grey"
+            value={email}
           />
           <View style={{ flexDirection: "row" }}>
             <TextInput
@@ -138,6 +147,7 @@ const Registration = ({ navigation }: any) => {
               autoCapitalize="none"
               onChangeText={setPassword}
               placeholderTextColor="grey"
+              value={password}
             />
             <TouchableOpacity onPress={togglePasswordVisibility}>
               <Feather

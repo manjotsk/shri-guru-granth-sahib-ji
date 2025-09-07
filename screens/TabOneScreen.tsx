@@ -1,17 +1,17 @@
-import { useCallback, useMemo, useRef, useState } from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import {
   ScrollView,
   StyleSheet,
   Pressable,
   TouchableOpacity,
   Alert,
+  TextInput,
 } from "react-native";
 import {
   ActivityIndicator,
   Button,
   Dialog,
   Portal,
-  TextInput,
 } from "react-native-paper";
 import InfinitePager, {
   InfinitePagerImperativeApi,
@@ -36,19 +36,23 @@ import {
   BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet";
 import { DataTable } from "react-native-paper";
-import React from "react";
 
-function keyExtractor(page: CreatePage) {
+function keyExtractor(page: any) {
   return `${page.key}`;
 }
 
-function Ang({ page, setAngId }: RootTabScreenProps<"TabOne">) {
+interface AngProps {
+  page: number;
+  setAngId: (angId: any) => Promise<void>;
+}
+
+function Ang({ page, setAngId }: AngProps) {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ["70%"], []);
-  const [words, setWords] = useState([]);
+  const [words, setWords] = useState<string[]>([]);
 
-  const handlePresentModalPress = useCallback((line) => {
-    setWords(line?.split(" "));
+  const handlePresentModalPress = useCallback((line: string) => {
+    setWords(line?.split(" ") || []);
     bottomSheetModalRef.current?.present();
   }, []);
   const handleSheetChanges = useCallback((index: number) => {
@@ -78,7 +82,7 @@ function Ang({ page, setAngId }: RootTabScreenProps<"TabOne">) {
   const addBookmark = useAddBookmark();
   const kosh = useKosh(words);
 
-  const onDoubleTapEvent = async (event: any, data) => {
+  const onDoubleTapEvent = async (event: any, data: any) => {
     if (event.nativeEvent.state === State.ACTIVE) {
       try {
         await addBookmark.mutateAsync(data);
@@ -112,7 +116,7 @@ function Ang({ page, setAngId }: RootTabScreenProps<"TabOne">) {
                 {kosh.isFetching ? (
                   <ActivityIndicator />
                 ) : (
-                  kosh?.data?.map(({ _id, word, meaning, otherFaces }) => (
+                  (kosh?.data as any[])?.map(({ _id, word, meaning, otherFaces }: any) => (
                     <DataTable.Row key={_id}>
                       <DataTable.Cell style={{padding:5}}>
                         <View style={{ display: "flex" }}>
@@ -121,7 +125,7 @@ function Ang({ page, setAngId }: RootTabScreenProps<"TabOne">) {
                           }}>{word}</Text>
                           {otherFaces?.length ? (
                             <Text style={{ color: "grey", fontSize: 10 }}>
-                              ({otherFaces?.map?.(({ word }) => word)?.join(", ")})
+                              ({otherFaces?.map?.(({ word }: any) => word)?.join(", ")})
                             </Text>
                           ) : undefined}
                         </View>
@@ -144,9 +148,7 @@ function Ang({ page, setAngId }: RootTabScreenProps<"TabOne">) {
         </BottomSheetModalProvider>
         <Dialog visible={visible}>
           <TextInput
-            label="Ang ID"
-            focusable
-            autoFocus
+            placeholder="Ang ID"
             keyboardType="number-pad"
             value={`${angValue}`}
             onChangeText={(value) => {
@@ -230,7 +232,12 @@ function Ang({ page, setAngId }: RootTabScreenProps<"TabOne">) {
 }
 const NUM_ITEMS = 50;
 
-const Page = ({ index, setAngId }: { index: number }) => {
+interface PageProps {
+  index: number;
+  setAngId: (angId: any) => Promise<void>;
+}
+
+const Page = ({ index, setAngId }: PageProps) => {
   return <Ang page={index} setAngId={setAngId} />;
 };
 
@@ -251,7 +258,7 @@ const lastSlide = slides[slides.length - 1];
 const loopingSlides = [lastSlide, ...slides, firstSlide];
 
 export default function TabOneScreen() {
-  const infinitePager = useRef<InfinitePagerImperativeApi>();
+  const infinitePager = useRef<InfinitePagerImperativeApi>(null);
 
   const [displayPage, setDisplayPage] = useState(false);
   const [displayPortal, setDisplayPortal] = useState(true);

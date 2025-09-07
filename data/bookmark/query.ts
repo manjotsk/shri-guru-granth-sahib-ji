@@ -1,6 +1,9 @@
-import { useQuery } from "react-query";
-import { Ang } from "../../types";
+import { useQuery } from "@tanstack/react-query";
+import { Ang } from "../../types-data";
 import { getBookmark } from "./services";
 
 export const useBookmarks = () =>
-  useQuery<any, any, Ang, any>(["bookmarks"], async () => getBookmark());
+  useQuery<any, any>({
+    queryKey: ["bookmarks"],
+    queryFn: async () => getBookmark(),
+  });

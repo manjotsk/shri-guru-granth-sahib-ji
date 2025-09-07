@@ -1,3 +1,4 @@
+import React from 'react';
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
@@ -11,7 +12,7 @@ import {
   useQueryClient,
   QueryClient,
   QueryClientProvider,
-} from "react-query";
+} from "@tanstack/react-query";
 import { Provider as PaperProvider } from "react-native-paper";
 import { useEffect } from "react";
 import i18n from "./i18n";

@@ -1,15 +1,19 @@
-import { useMutation } from "react-query";
+import { useMutation } from "@tanstack/react-query";
 import { addBookmark, deleteBookmark } from "./services";
 import { queryClient } from "../../App";
 
 export const useAddBookmark = () =>
-  useMutation((body) => {
-    return addBookmark(body);
+  useMutation({
+    mutationFn: (body: any) => {
+      return addBookmark(body);
+    },
   });
 export const useDeleteBookmark = () =>
-  useMutation((id) => {
-    return deleteBookmark(id).then(async (res) => {
-      await queryClient.refetchQueries({ queryKey: ["bookmarks"] });
-      return res;
-    });
+  useMutation({
+    mutationFn: (id: any) => {
+      return deleteBookmark(id).then(async (res) => {
+        await queryClient.refetchQueries({ queryKey: ["bookmarks"] });
+        return res;
+      });
+    },
   });

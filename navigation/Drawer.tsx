@@ -25,7 +25,7 @@ import { Linking } from "react-native";
 import Slider from "@react-native-community/slider";
 import React from "react";
 
-function CustomDrawerContent(props) {
+function CustomDrawerContent(props: any) {
   const [isLoggedIn, setisLoggedIn] = useAtom(loginFlag);
 
   const navigation = useNavigation();
@@ -33,7 +33,7 @@ function CustomDrawerContent(props) {
     try {
       await AsyncStorage.removeItem("authToken");
       setisLoggedIn(false);
-      navigation.navigate("Sri Guru Granth Sahib Ji");
+      navigation.navigate("Root");
     } catch (error) {
       console.error("Error during logout:", error);
     }
