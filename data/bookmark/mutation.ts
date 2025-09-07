@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { addBookmark, deleteBookmark } from "./services";
-import { queryClient } from "../../App";
+import { queryClient } from "../../config/queryClient";
 
 export const useAddBookmark = () =>
   useMutation({

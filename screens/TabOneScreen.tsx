@@ -78,7 +78,7 @@ function Ang({ page, setAngId }: AngProps) {
   );
   const [visible, setVisible] = useState(false);
   const [angValue, setAngValue] = useState(page);
-  const doubleTapRef = useRef(null);
+  // Removed doubleTapRef as it's not needed and causes Reanimated warning
   const addBookmark = useAddBookmark();
   const kosh = useKosh(words);
 
@@ -189,7 +189,6 @@ function Ang({ page, setAngId }: AngProps) {
         renderItem={(page) => (
           <View>
             <TapGestureHandler
-              ref={doubleTapRef}
               onHandlerStateChange={(e) => {
                 if (!true)
                   onDoubleTapEvent(e, {
@@ -259,34 +258,53 @@ const loopingSlides = [lastSlide, ...slides, firstSlide];
 
 export default function TabOneScreen() {
   const infinitePager = useRef<InfinitePagerImperativeApi>(null);
-
-  const [displayPage, setDisplayPage] = useState(false);
   const [displayPortal, setDisplayPortal] = useState(true);
+  const [initialPage, setInitialPage] = useState(1);
+  const [isInitialized, setIsInitialized] = useState(false);
+
   useEffect(() => {
-    setTimeout(() => {
+    // Load initial page immediately
+    const loadInitialPage = async () => {
+      try {
+        const lastang = await AsyncStorage.getItem("lastAng");
+        const pageNumber = lastang ? parseInt(lastang, 10) : 1;
+        setInitialPage(pageNumber);
+        setIsInitialized(true);
+      } catch (error) {
+        console.error("Error loading initial page:", error);
+        setInitialPage(1);
+        setIsInitialized(true);
+      }
+    };
+
+    loadInitialPage();
+
+    // Hide splash screen after delay
+    const splashTimer = setTimeout(() => {
       setDisplayPortal(false);
     }, 4000);
-    setTimeout(async () => {
-      let lastang = (await AsyncStorage.getItem("lastAng")) || 1;
-      infinitePager.current?.setPage(+lastang, {
-        animated: false,
-      });
-      setDisplayPage(true);
-    }, 1000);
-    return () => {};
-  }, [infinitePager.current]);
+
+    return () => {
+      clearTimeout(splashTimer);
+    };
+  }, []);
+
+  // Set initial page when component is ready
+  useEffect(() => {
+    if (isInitialized && infinitePager.current && initialPage !== 1) {
+      setTimeout(() => {
+        infinitePager.current?.setPage(initialPage, {
+          animated: false,
+        });
+      }, 100); // Small delay to ensure pager is ready
+    }
+  }, [isInitialized, initialPage]);
 
   return (
     <View style={styles.flex}>
-      <View
-        style={{
-          display: displayPage ? "flex" : "none",
-          flex: 1,
-        }}
-      >
+      {isInitialized && (
         <InfinitePager
           ref={infinitePager}
-          // PageComponent={Page}
           renderPage={(props) => (
             <Page
               {...props}
@@ -307,7 +325,7 @@ export default function TabOneScreen() {
             }
           }}
         />
-      </View>
+      )}
       {displayPortal && (
         <Portal>
           <Animatable.View

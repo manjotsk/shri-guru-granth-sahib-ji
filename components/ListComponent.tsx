@@ -10,14 +10,13 @@ import React, { useState } from "react";
 import {
   Gesture,
   FlatList,
-  PanGestureHandler,
-  PanGestureHandlerGestureEvent,
+  GestureDetector,
 } from "react-native-gesture-handler";
 import Animated, {
-  useAnimatedGestureHandler,
   useAnimatedStyle,
   useSharedValue,
   withSpring,
+  runOnJS,
 } from "react-native-reanimated";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useDeleteBookmark } from "../data/bookmark/mutation";
@@ -56,21 +55,22 @@ const ListComponent = ({ data }: any) => {
 const ListItem = ({ item, onDelete }: any) => {
   const translateX = useSharedValue(0);
 
-  const panGesture = useAnimatedGestureHandler<PanGestureHandlerGestureEvent>({
-    onStart: (_, ctx) => {
-      (ctx as { startX: number }).startX = translateX.value;
-    },
-    onActive: (event, ctx) => {
-      translateX.value = (ctx as { startX: number }).startX + event.translationX;
-    },
-    onEnd: () => {
+  const panGesture = Gesture.Pan()
+    .failOffsetY([-5, 5])
+    .activeOffsetX([-5, 5])
+    .onStart(() => {
+      // Store initial position (optional, can use translateX.value directly)
+    })
+    .onUpdate((event) => {
+      translateX.value = event.translationX;
+    })
+    .onEnd(() => {
       if (translateX.value < -TRANSLATE_X_THRESHOLD) {
         translateX.value = withSpring(-LIST_HEIGHT);
       } else {
         translateX.value = withSpring(0);
       }
-    },
-  });
+    });
 
   const rStyle = useAnimatedStyle(() => ({
     transform: [{ translateX: translateX.value }],
@@ -88,11 +88,7 @@ const ListItem = ({ item, onDelete }: any) => {
           />
         </Animated.View>
       </Pressable>
-      <PanGestureHandler
-        failOffsetY={[-5, 5]}
-        activeOffsetX={[-5, 5]}
-        onGestureEvent={panGesture}
-      >
+      <GestureDetector gesture={panGesture}>
         <Animated.View style={[styles.insidecontainer, rStyle]}>
           <ConfirmModal
             modalVisible={modalVisible}
@@ -206,7 +202,7 @@ const ListItem = ({ item, onDelete }: any) => {
             ANG: {item.ang}
           </Text>
         </Animated.View>
-      </PanGestureHandler>
+      </GestureDetector>
     </View>
   );
 };

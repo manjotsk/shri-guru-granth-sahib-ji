@@ -19,8 +19,7 @@ import i18n from "./i18n";
 import { useAtom } from "jotai";
 import { fontScaleAtom } from "./store/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
-export const queryClient = new QueryClient();
+import { queryClient } from "./config/queryClient";
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
