@@ -43,7 +43,8 @@
       "policy": "sdkVersion"
     },
     "plugins": [
-      "expo-font"
+      "expo-font",
+      "expo-asset"
     ]
   }
 }
